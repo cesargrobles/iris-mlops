@@ -1,0 +1,15 @@
+name: mlops_kickoff
+channels:
+  - conda-forge
+dependencies:
+  - python=3.10
+  - pandas
+  - numpy
+  - pyyaml
+  - scikit-learn
+  - seaborn
+  - matplotlib
+  - pytest
+  - pip
+  - pip:
+      - joblib
