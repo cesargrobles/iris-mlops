@@ -20,3 +20,15 @@ def test_load_data_loads_csv(tmp_path: Path):
     df = load_data(cfg)
     assert isinstance(df, pd.DataFrame)
     assert df.shape == (2, 2)
+
+def test_load_data_seaborn():
+    cfg = {
+        "data": {
+            "source": "seaborn",
+            "dataset_name": "iris"
+        }
+    }
+
+    df = load_data(cfg)
+    assert not df.empty
+    assert "species" in df.columns

@@ -7,6 +7,8 @@ dependencies:
   - numpy
   - pyyaml
   - scikit-learn
+  - seaborn
+  - matplotlib
   - pytest
   - pip
   - pip:
