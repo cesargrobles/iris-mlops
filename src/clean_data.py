@@ -66,6 +66,7 @@ def _standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def clean_data(df: pd.DataFrame, config: Dict[str, Any]) -> pd.DataFrame:
+    logger.info("Starting clean_data | input_shape=%s", df.shape)
     """
     Clean and stabilize the raw dataset.
 
