@@ -13,7 +13,7 @@ from pathlib import Path
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from src.clean_data import clean_dataframe
+from src.clean_data import clean_data
 from src.evaluate import evaluate_model
 from src.features import get_feature_preprocessor
 from src.infer import run_inference
@@ -87,7 +87,7 @@ def main():
 
     # 4) Clean
     target_col = SETTINGS["target_column"]
-    df_clean = clean_dataframe(df_raw, target_column=target_col)
+    df_clean = clean_data(df_raw, target_column=target_col)
 
     # 5) Save processed
     save_csv(df_clean, Path(SETTINGS["paths"]["clean_data"]))
