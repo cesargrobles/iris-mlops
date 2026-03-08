@@ -17,7 +17,7 @@ from src.clean_data import clean_data
 from src.evaluate import evaluate_model
 from src.features import get_feature_preprocessor
 from src.infer import run_inference
-from src.load_data import load_raw_data
+from src.load_data import load_data
 from src.train import train_model
 from src.utils import save_csv, save_model
 from src.validate import validate_dataframe
@@ -83,7 +83,7 @@ def main():
     # --------------------------------------------------------
 
     # 3) Load
-    df_raw = load_raw_data(Path(SETTINGS["paths"]["raw_data"]))
+    df_raw = load_data(Path(SETTINGS["paths"]["raw_data"]))
 
     # 4) Clean
     target_col = SETTINGS["target_column"]
