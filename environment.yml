@@ -1,0 +1,16 @@
+name: mlops-kickoff
+channels:
+  - conda-forge
+  - defaults
+dependencies:
+  - python>=3.9
+  - pandas
+  - numpy
+  - scikit-learn
+  - joblib
+  - jupyter
+  - ipykernel
+  - pytest
+  - pytest-cov
+  - pip
+  - seaborn
