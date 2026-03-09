@@ -34,4 +34,4 @@ def test_load_data_seaborn():
 
     df = load_data(cfg)
     assert not df.empty
-    assert "species" in df.columnss
+    assert "species" in df.columns
