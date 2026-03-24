@@ -1,84 +1,120 @@
-"""
-Module: Evaluation
-------------------
-Role: Generate metrics and plots for model performance.
-Input: Trained Model + Test Data.
-Output: Metrics dictionary and plots saved to `reports/`.
-"""
-
+# src/evaluate.py
 """
 Educational Goal:
-- Why this module exists in an MLOps system: to measure how well
-  the trained model performs on unseen data, in a single reusable place.
-- Responsibility: receive a trained pipeline and test data, compute
-  and print the right metric based on problem type.
-- Pipeline contract:
-    Input:  model (fitted sklearn Pipeline), X_test (DataFrame),
-            y_test (Series), problem_type (str)
-    Output: a single float (F1 score for classification, RMSE for regression)
+- Why this module exists in an MLOps system: Provide consistent evaluation to compare runs and prevent regressions.
+- Responsibility (separation of concerns): Only computes metrics, no training or artifact writing.
+- Pipeline contract: Inputs are a fitted model and evaluation data, output is a dictionary of metrics.
 
 TODO: Replace print statements with standard library logging in a later session
-TODO: Any temporary or hardcoded variable will be imported from config.yml later
+TODO: Any temporary or hardcoded variable or parameter will be imported from config.yml in a later session
 """
 
-# --- Imports ---
-# pandas: to work with DataFrames
-# sklearn metrics: to compute F1 and RMSE
+from typing import Dict, Optional
+import numpy as np
 import pandas as pd
-from sklearn.metrics import f1_score, mean_squared_error
+from sklearn.metrics import average_precision_score, f1_score, mean_squared_error, roc_auc_score
 
 
-def evaluate_model(
-    model,
-    X_test: pd.DataFrame,
-    y_test: pd.Series,
-    problem_type: str
-) -> float:
+def _normalize_problem_type(problem_type: Optional[str]) -> str:
     """
     Inputs:
-    - model: fitted sklearn Pipeline (preprocessor + estimator)
-    - X_test: DataFrame with feature columns (never seen during training)
-    - y_test: Series with true target labels
-    - problem_type: "classification" or "regression"
+    - problem_type: Raw problem type string
 
     Outputs:
-    - a single float: F1 score (classification) or RMSE (regression)
+    - normalized: "classification" or "regression"
 
     Why this contract matters for reliable ML delivery:
-    - Using held-out test data gives an honest measure of real performance
-    - Returning a single float makes it easy to compare runs and log metrics
-    - Supporting both problem types makes the module reusable across projects
+    - Strict normalization avoids silent configuration errors and makes failures actionable
     """
+    return (problem_type or "").strip().lower()
 
-    print("[ evaluate.py ] Starting model evaluation...")  # TODO: replace with logging later
 
-    # --- Fail fast: crash immediately if test data is empty ---
-    # Why: empty test sets produce misleading perfect scores silently
-    if X_test.empty or y_test.empty:
-        raise ValueError("X_test or y_test is empty. Cannot evaluate on empty data.")
+def evaluate_model(model, X_eval: pd.DataFrame, y_eval: pd.Series, problem_type: str) -> Dict[str, float]:
+    """
+    Inputs:
+    - model: Fitted model or Pipeline with predict()
+    - X_eval: Evaluation features (use validation split during development)
+    - y_eval: Evaluation target
+    - problem_type: "regression" or "classification"
 
-    # --- Generate predictions ---
-    # Why: we call predict on the full Pipeline so preprocessing is applied
-    # exactly the same way as during training — no leakage, no drift
-    y_pred = model.predict(X_test)
-    print(f"[ evaluate.py ] Predictions generated for {len(y_pred)} samples.")  # TODO: replace with logging later
+    Outputs:
+    - metrics: Dictionary of metrics as Python floats
 
-    # --- Compute metric based on problem type ---
-    # Why: routing by string keeps this module flexible and config-driven
-    if problem_type == "classification":
-        # weighted F1 works for binary AND multiclass (e.g. iris has 3 classes)
-        score = f1_score(y_test, y_pred, average="weighted")
-        print(f"[ evaluate.py ] F1 Score (weighted): {score:.4f}")  # TODO: replace with logging later
+    Why this contract matters for reliable ML delivery:
+    - Standardized metric keys enable automated quality gates later in continuous integration pipelines
+    - Returning JSON-safe floats prevents serialization issues in experiment tracking tools
+    """
+    print("[evaluate.evaluate_model] Starting evaluation")  # TODO: replace with logging later
 
-    elif problem_type == "regression":
-        # RMSE: same units as the target, easy to interpret
-        score = mean_squared_error(y_test, y_pred, squared=False)
-        print(f"[ evaluate.py ] RMSE: {score:.4f}")  # TODO: replace with logging later
+    if X_eval is None or len(X_eval) == 0:
+        raise ValueError("Fatal: X_eval is empty. Cannot evaluate model")
 
-    else:
+    if y_eval is None or len(y_eval) == 0:
+        raise ValueError("Fatal: y_eval is empty. Cannot evaluate model")
+
+    if len(X_eval) != len(y_eval):
         raise ValueError(
-            f"Unknown problem_type: '{problem_type}'. "
-            "Use 'classification' or 'regression'."
-        )
+            f"Fatal: X_eval rows ({len(X_eval)}) do not match y_eval rows ({len(y_eval)})")
 
-    return score
+    if not hasattr(model, "predict"):
+        raise TypeError(
+            f"Fatal: model must implement predict(), got type={type(model)}")
+
+    pt = _normalize_problem_type(problem_type)
+
+    if pt == "classification":
+        if y_eval.nunique(dropna=True) < 2:
+            raise ValueError(
+                "Fatal: y_eval contains only one class in this split, so AUC metrics are undefined. "
+                "Use stratified splitting, adjust split ratios, or increase dataset size"
+            )
+
+        if not hasattr(model, "predict_proba"):
+            raise TypeError(
+                "Fatal: classification model must implement predict_proba()")
+
+        proba = model.predict_proba(X_eval)
+
+        if not isinstance(proba, np.ndarray):
+            proba = np.asarray(proba)
+
+        if proba.ndim != 2 or proba.shape[0] != len(X_eval):
+            raise ValueError(
+                f"Fatal: predict_proba returned invalid shape {getattr(proba, 'shape', None)}")
+
+        if proba.shape[1] < 2:
+            raise ValueError(
+                "Fatal: predict_proba returned only one probability column. "
+                "This usually means the model saw only one class during training"
+            )
+
+        n_classes = proba.shape[1]
+        y_pred = model.predict(X_eval)
+
+        if n_classes == 2:
+            # Binary classification: use positive-class probabilities
+            y_prob = proba[:, 1]
+            metrics = {
+                "pr_auc": float(average_precision_score(y_eval, y_prob)),
+                "roc_auc": float(roc_auc_score(y_eval, y_prob)),
+            }
+        else:
+            # Multiclass: use OVR strategy for AUC metrics and weighted F1
+            metrics = {
+                "roc_auc": float(roc_auc_score(y_eval, proba, multi_class="ovr", average="weighted")),
+                "f1_weighted": float(f1_score(y_eval, y_pred, average="weighted")),
+            }
+
+        # TODO: replace with logging later
+        print(f"[evaluate.evaluate_model] Metrics={metrics}")
+        return metrics
+
+    if pt == "regression":
+        y_pred = model.predict(X_eval)
+        metrics = {"rmse": float(np.sqrt(mean_squared_error(y_eval, y_pred)))}
+        # TODO: replace with logging later
+        print(f"[evaluate.evaluate_model] Metrics={metrics}")
+        return metrics
+
+    raise ValueError(
+        f"Fatal: Unsupported problem_type '{problem_type}'. Use 'classification' or 'regression'")
