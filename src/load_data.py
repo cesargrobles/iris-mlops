@@ -20,6 +20,7 @@ class DataLoadingError(Exception):
 
 
 def load_data(config: Dict[str, Any]) -> pd.DataFrame:
+    logger.info("Starting load_data with config: %s", config)
     """
     Load dataset dynamically based on config.
     """

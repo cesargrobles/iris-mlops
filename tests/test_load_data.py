@@ -11,6 +11,9 @@ def test_load_data_raises_on_missing_file(tmp_path: Path):
     with pytest.raises(DataLoadingError):
         load_data(cfg)
 
+def test_load_data_missing_data_section():
+    with pytest.raises(DataLoadingError):
+        load_data({})
 
 def test_load_data_loads_csv(tmp_path: Path):
     p = tmp_path / "dataset.csv"
