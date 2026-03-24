@@ -1,65 +1,59 @@
+# src/load_data.py
 """
-Module: Data Loader
--------------------
-Role: Ingest raw data from sources (CSV, SQL, API).
-Input: Path to file or connection string.
-Output: pandas.DataFrame (Raw).
+Educational Goal:
+- Why this module exists in an MLOps system: Provide a single, predictable entry point for raw data ingestion.
+- Responsibility (separation of concerns): Only loads raw data, no cleaning, validation, training, or evaluation.
+- Pipeline contract (inputs and outputs): Input is a raw CSV path, output is a raw DataFrame.
+
+TODO: Replace print statements with standard library logging in a later session
+TODO: Any temporary or hardcoded variable or parameter will be imported from config.yml in a later session
 """
-from __future__ import annotations
-import logging
-from typing import Dict, Any
+
 from pathlib import Path
 import pandas as pd
-import seaborn as sns
 
-logger = logging.getLogger(__name__)
-
-
-class DataLoadingError(Exception):
-    pass
+from src.utils import load_csv
 
 
-def load_data(config: Dict[str, Any]) -> pd.DataFrame:
-    logger.info("Starting load_data with config: %s", config)
+def load_raw_data(raw_data_path: Path) -> pd.DataFrame:
     """
-    Load dataset dynamically based on config.
+    Inputs:
+    - raw_data_path: Path to the raw CSV file
+    Outputs:
+    - df_raw: DataFrame loaded from raw_data_path
+    Why this contract matters for reliable ML delivery:
+    - A stable ingestion interface prevents downstream rewiring when data sources evolve
     """
+    print(
+        # TODO: replace with logging later
+        f"[load_data.load_raw_data] Loading raw data from {raw_data_path}")
 
-    if "data" not in config:
-        raise DataLoadingError("Missing 'data' section in config.")
+    # 1) Pipeline Guardrail: Missing Data Dependency
+    if not raw_data_path.exists():
+        raise FileNotFoundError(
+            f"Ingestion Error: The raw data file was not found at {raw_data_path}. "
+            f"Please ensure your raw dataset is placed in the 'data/raw/' directory."
+        )
 
-    data_cfg = config["data"]
-    source = data_cfg.get("source")
+    # 2) Pipeline Guardrail: Not a File
+    if not raw_data_path.is_file():
+        raise ValueError(
+            f"Ingestion Error: {raw_data_path} is a directory, not a file. "
+            "Check RAW_DATA_PATH in src/main.py"
+        )
 
-    if source is None and data_cfg.get("raw"):
-        source = "csv"
+    # 3) Execute the load via Utility
+    df_raw = load_csv(raw_data_path)
 
-    if source == "seaborn":
-        dataset_name = data_cfg.get("dataset_name")
-        if not dataset_name:
-            raise DataLoadingError("Missing 'dataset_name' for seaborn source.")
+    # 4) Pipeline Guardrail: Empty Data
+    if df_raw.empty:
+        raise ValueError(
+            f"Ingestion Error: The file at {raw_data_path} loaded but contains zero rows. "
+            "Check your data source export."
+        )
 
-        try:
-            df = sns.load_dataset(dataset_name)
-        except Exception as e:
-            raise DataLoadingError(f"Failed to load seaborn dataset '{dataset_name}': {e}")
+    # 5) Observability
+    # TODO: replace with logging later
+    print(f"[load_data.load_raw_data] Loaded dataframe shape: {df_raw.shape}")
 
-    elif source == "csv":
-        raw_path = data_cfg.get("raw")
-        if not raw_path:
-            raise DataLoadingError("Missing 'raw' path for csv source.")
-
-        path = Path(raw_path)
-        if not path.exists():
-            raise DataLoadingError(f"CSV file not found at {raw_path}")
-
-        df = pd.read_csv(path)
-
-    else:
-        raise DataLoadingError("Unsupported data source. Use 'csv' or 'seaborn'.")
-
-    if df.empty:
-        raise DataLoadingError("Loaded dataset is empty.")
-
-    logger.info(f"Loaded dataset from {source}, shape={df.shape}")
-    return df
+    return df_raw
