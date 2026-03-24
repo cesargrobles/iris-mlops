@@ -32,6 +32,7 @@ def test_load_raw_data_real_dataset_integration():
         df.columns) >= 3, "Dataset has unexpectedly few columns, check the raw file"
 
 
+<<<<<<< HEAD
 def test_load_raw_data_raises_file_not_found(tmp_path: Path):
     """
     Unit Test: Missing file must fail fast with FileNotFoundError.
@@ -69,3 +70,8 @@ def test_load_raw_data_raises_on_empty_csv(tmp_path: Path):
 
     with pytest.raises(ValueError):
         load_raw_data(truly_empty)
+=======
+    df = load_data(cfg)
+    assert not df.empty
+    assert "species" in df.columns
+>>>>>>> group/dev

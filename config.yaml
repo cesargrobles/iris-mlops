@@ -2,8 +2,7 @@
 # This file will eventually control paths, hyperparameters, and toggles.
 
 data:
-  source: "seaborn"
-  dataset_name: "iris"
+  raw: "data/raw/dataset.csv"
   processed: "data/processed/clean.csv"
 
 train:
