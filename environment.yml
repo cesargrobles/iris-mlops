@@ -1,15 +1,16 @@
-name: mlops_kickoff
+name: mlops-kickoff
 channels:
   - conda-forge
+  - defaults
 dependencies:
-  - python=3.10
+  - python>=3.9
   - pandas
   - numpy
-  - pyyaml
   - scikit-learn
-  - seaborn
-  - matplotlib
+  - joblib
+  - jupyter
+  - ipykernel
   - pytest
+  - pytest-cov
   - pip
-  - pip:
-      - joblib
+  - seaborn
