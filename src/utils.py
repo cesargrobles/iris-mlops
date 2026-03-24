@@ -1,115 +1,104 @@
+# src/utils.py
 """
 Educational Goal:
-- Why this module exists in an MLOps system: Centralize I/O so the rest of the pipeline is easy to test and reuse.
-- Responsibility (separation of concerns): Only reading/writing datasets and model artifacts.
-- Pipeline contract (inputs and outputs): Paths in -> DataFrames/models out.
+- Why this module exists in an MLOps system: Centralize repetitive I/O (Input/Output) logic.
+- Responsibility (separation of concerns): Only basic CSV read/write and model save/load.
+- Pipeline contract: Agnostic plumbing. It does not know business logic or pipeline state.
 
 TODO: Replace print statements with standard library logging in a later session
-TODO: Any temporary or hardcoded variable or parameter will be imported from config.yml in a later session
 """
 
 from pathlib import Path
-
-import joblib
 import pandas as pd
+import joblib
 
 
 def load_csv(filepath: Path) -> pd.DataFrame:
     """
     Inputs:
-    - filepath: Path to a CSV on disk
+    - filepath: CSV path
     Outputs:
-    - df: DataFrame loaded from CSV
+    - df: Loaded DataFrame
     Why this contract matters for reliable ML delivery:
-    - A single loader reduces “works on my machine” issues and keeps data reading consistent.
+    - Standardized parsing reduces fragile one-off fixes and improves reproducibility
     """
-    print(f"[utils.load_csv] Loading CSV: {filepath}")  # TODO: replace with logging later
+    print(
+        # TODO: replace with logging later
+        f"[utils.load_csv] Loading CSV from {filepath}")
 
-    # --------------------------------------------------------
-    # START STUDENT CODE
-    # --------------------------------------------------------
-    # Standard read_csv is used here. Adjust if needed:
-    # For CSV with semicolon: sep=";"
-    # For specific encoding: encoding="utf-8"
-    # For date parsing: parse_dates=[...]
-    # --------------------------------------------------------
-    # END STUDENT CODE
-    # --------------------------------------------------------
+    if not isinstance(filepath, Path):
+        raise TypeError(
+            f"filepath must be a pathlib.Path, got type={type(filepath)}")
 
-    return pd.read_csv(filepath)
+    if filepath.exists() and not filepath.is_file():
+        raise ValueError(
+            f"CSV Parsing Error: {filepath} exists but is not a file")
+
+    try:
+        df = pd.read_csv(filepath, sep=",")
+    except Exception as e:
+        raise ValueError(
+            f"CSV Parsing Error: Failed to read {filepath}. "
+            "Check delimiter, encoding, or file corruption. "
+            f"Original pandas error: {e}"
+        )
+
+    return df
 
 
 def save_csv(df: pd.DataFrame, filepath: Path) -> None:
     """
     Inputs:
     - df: DataFrame to save
-    - filepath: destination Path
+    - filepath: Output path
     Outputs:
     - None
     Why this contract matters for reliable ML delivery:
-    - Materialized data artifacts make the pipeline debuggable and reproducible.
+    - Deterministic saving (index=False) prevents alignment bugs downstream
     """
-    print(f"[utils.save_csv] Saving CSV: {filepath}")  # TODO: replace with logging later
+    print(
+        # TODO: replace with logging later
+        f"[utils.save_csv] Saving CSV to {filepath}")
+
     filepath.parent.mkdir(parents=True, exist_ok=True)
-
-    # --------------------------------------------------------
-    # START STUDENT CODE
-    # --------------------------------------------------------
-    # Standard to_csv with index=False to avoid row numbers.
-    # Adjust if needed:
-    # To keep index: index=True
-    # For float formatting: float_format="%.4f"
-    # --------------------------------------------------------
-    # END STUDENT CODE
-    # --------------------------------------------------------
-
     df.to_csv(filepath, index=False)
 
 
 def save_model(model, filepath: Path) -> None:
     """
     Inputs:
-    - model: any Python object (typically sklearn Pipeline)
-    - filepath: destination Path
+    - model: Trained estimator or pipeline
+    - filepath: Output path
     Outputs:
     - None
     Why this contract matters for reliable ML delivery:
-    - Persisting a single Pipeline artifact reduces training/serving skew.
+    - Persisted artifacts enable reproducible inference and auditability
     """
-    print(f"[utils.save_model] Saving model: {filepath}")  # TODO: replace with logging later
+    print(
+        # TODO: replace with logging later
+        f"[utils.save_model] Saving model to {filepath}")
+
     filepath.parent.mkdir(parents=True, exist_ok=True)
-
-    # --------------------------------------------------------
-    # START STUDENT CODE
-    # --------------------------------------------------------
-    # Standard joblib.dump is used. For compression adjust compress parameter:
-    # No compression (default): joblib.dump(model, filepath)
-    # With compression: joblib.dump(model, filepath, compress=3)
-    # --------------------------------------------------------
-    # END STUDENT CODE
-    # --------------------------------------------------------
-
     joblib.dump(model, filepath)
 
 
 def load_model(filepath: Path):
     """
     Inputs:
-    - filepath: Path to joblib artifact
+    - filepath: Model artifact path
     Outputs:
-    - model: loaded object
+    - model: Deserialized estimator
     Why this contract matters for reliable ML delivery:
-    - Loading the same artifact ensures inference uses the exact trained pipeline.
+    - Fail fast on missing artifacts prevents cryptic inference crashes
     """
-    print(f"[utils.load_model] Loading model: {filepath}")  # TODO: replace with logging later
+    print(
+        # TODO: replace with logging later
+        f"[utils.load_model] Loading model from {filepath}")
 
-    # --------------------------------------------------------
-    # START STUDENT CODE
-    # --------------------------------------------------------
-    # Standard joblib.load is sufficient for local environments.
-    # For versioning checks or compatibility validation, add checks here if needed.
-    # --------------------------------------------------------
-    # END STUDENT CODE
-    # --------------------------------------------------------
+    if not filepath.exists():
+        raise FileNotFoundError(
+            f"Model artifact not found at {filepath}. "
+            "Run the training pipeline first to generate models/model.joblib"
+        )
 
     return joblib.load(filepath)
