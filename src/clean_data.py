@@ -1,125 +1,99 @@
+# src/clean_data.py
 """
-Module: Data Cleaning
----------------------
-Role: Preprocessing, missing value imputation, and feature engineering.
-Input: pandas.DataFrame (Raw).
-Output: pandas.DataFrame (Processed/Clean).
+Educational Goal:
+- Why this module exists in an MLOps system: To isolate dataset-specific formatting and quality filtering
+  from model training, ensuring upstream data anomalies don't cause downstream pipeline crashes.
+- Responsibility (separation of concerns): Pure data transformations (standardizing column names,
+  deduplication, dropping missing target values) and data observability. Strictly NO file I/O and NO model fitting.
+- Pipeline contract (inputs and outputs): Inputs are the raw Pandas DataFrame and the target column name.
+  Output is a cleaned Pandas DataFrame that is guaranteed to have the target column, ready for validation and splitting.
+
+TODO: Replace print statements with standard library logging in a later session
+TODO: Any temporary or hardcoded variable or parameter will be imported from config.yml in a later session
 """
-from __future__ import annotations
 
-import logging
-from dataclasses import dataclass
-from pathlib import Path
-from typing import Any, Dict
-
+from typing import Optional
 import pandas as pd
 
-logger = logging.getLogger(__name__)
 
+def clean_dataframe(df_raw: pd.DataFrame, target_column: Optional[str] = None) -> pd.DataFrame:
+    
+    """
+    One cleaner for both training and inference.
 
-class DataCleaningError(RuntimeError):
-    """Raised when cleaning cannot be completed safely."""
+    Training mode (target_column provided):
+    - Standardize headers
+    - Drop exact duplicates
+    - Drop rows with missing target
 
+    Inference mode (target_column None):
+    - Standardize headers
+    - Drop exact duplicates
+    - Do not require or drop based on target
+    """
+    print("[clean_data.clean_dataframe] Cleaning dataframe")  # TODO: replace with logging later
 
-@dataclass(frozen=True)
-class CleanConfig:
-    processed_path: Path
-    drop_duplicates: bool = True
-    dropna: bool = True
-    reset_index: bool = True
+    if df_raw is None:
+        raise ValueError(
+            "df_raw is None. Check src/load_data.py and RAW_DATA_PATH in src/main.py")
 
+    if not isinstance(df_raw, pd.DataFrame):
+        raise TypeError(
+            f"df_raw must be a pandas DataFrame, got type={type(df_raw)}")
 
-def _build_clean_config(config: Dict[str, Any]) -> CleanConfig:
-    if not isinstance(config, dict):
-        raise DataCleaningError("Config must be a dictionary.")
+    df_clean = df_raw.copy()
+    initial_rows = len(df_clean)
 
-    data_cfg = config.get("data")
-    if not isinstance(data_cfg, dict):
-        raise DataCleaningError("Missing or invalid config section: 'data'.")
-
-    processed = data_cfg.get("processed")
-    if not processed or not isinstance(processed, str):
-        raise DataCleaningError("Missing or invalid config key: data.processed (must be a string path).")
-
-    cleaning_cfg = config.get("cleaning", {})
-    if cleaning_cfg is None:
-        cleaning_cfg = {}
-    if not isinstance(cleaning_cfg, dict):
-        raise DataCleaningError("Invalid config section: 'cleaning' must be a dict if provided.")
-
-    return CleanConfig(
-        processed_path=Path(processed),
-        drop_duplicates=bool(cleaning_cfg.get("drop_duplicates", True)),
-        dropna=bool(cleaning_cfg.get("dropna", True)),
-        reset_index=bool(cleaning_cfg.get("reset_index", True)),
-    )
-
-
-def _standardize_columns(df: pd.DataFrame) -> pd.DataFrame:
-    out = df.copy()
-    out.columns = (
-        out.columns.astype(str)
+    # Standardize headers to keep downstream contracts stable
+    df_clean.columns = (
+        df_clean.columns
+        .astype(str)
         .str.strip()
         .str.replace(" ", "_", regex=False)
     )
-    return out
 
+    # Drop exact duplicates across all columns (including ID if present)
+    df_clean = df_clean.drop_duplicates()
 
+<<<<<<< HEAD
+    if target_column is not None:
+        # Standardize target name to match standardized headers
+        target_column_std = (
+            (target_column or "")
+            .strip()
+            .replace(" ", "_")
+        )
+=======
 def clean_data(df: pd.DataFrame, config: Dict[str, Any]) -> pd.DataFrame:
     logger.info("Starting clean_data | input_shape=%s", df.shape)
     """
     Clean and stabilize the raw dataset.
+>>>>>>> group/dev
 
-    - Standardizes column names (strip + spaces to underscores)
-    - Drops duplicates and missing values (configurable)
-    - Resets index (configurable)
-    """
-    if not isinstance(df, pd.DataFrame):
-        raise DataCleaningError("Input must be a pandas DataFrame.")
-    if df.shape[0] == 0:
-        raise DataCleaningError("Input DataFrame is empty.")
+        if not target_column_std:
+            raise ValueError("target_column is empty after standardization")
 
-    cc = _build_clean_config(config)
+        # Be forgiving to case drift in student datasets
+        cols_lower = {c.lower(): c for c in df_clean.columns}
+        if target_column_std not in df_clean.columns:
+            if target_column_std.lower() in cols_lower:
+                target_column_std = cols_lower[target_column_std.lower()]
+            else:
+                raise ValueError(
+                    f"Fatal: target column '{target_column}' missing after cleaning. "
+                    "Check SETTINGS['target_column'] in src/main.py and your raw CSV headers"
+                )
 
-    initial_shape = df.shape
-    out = _standardize_columns(df)
+        # Supervised learning requires a target label for every training row
+        df_clean = df_clean.dropna(subset=[target_column_std])
 
-    if cc.drop_duplicates:
-        out = out.drop_duplicates()
+    df_clean = df_clean.reset_index(drop=True)
 
-    if cc.dropna:
-        out = out.dropna()
+    dropped_rows = initial_rows - len(df_clean)
+    if dropped_rows > 0:
+        # TODO: replace with logging later
+        print(f"[clean_data.clean_dataframe] Dropped {dropped_rows} rows")
 
-    if out.shape[0] == 0:
-        raise DataCleaningError("Cleaning removed all rows (empty dataset). Check upstream data quality.")
-
-    if cc.reset_index:
-        out = out.reset_index(drop=True)
-
-    logger.info("Cleaned data: initial_shape=%s final_shape=%s", initial_shape, out.shape)
-    return out
-
-
-def save_clean_data(df_clean: pd.DataFrame, config: Dict[str, Any]) -> Path:
-    """
-    Persist the cleaned dataset to disk as the canonical processed artifact.
-
-    Expects:
-      config["data"]["processed"] -> output path for clean CSV
-    """
-    if not isinstance(df_clean, pd.DataFrame):
-        raise DataCleaningError("df_clean must be a pandas DataFrame.")
-    if df_clean.shape[0] == 0:
-        raise DataCleaningError("df_clean is empty; refusing to save empty artifact.")
-
-    cc = _build_clean_config(config)
-    out_path = cc.processed_path
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-
-    try:
-        df_clean.to_csv(out_path, index=False)
-    except Exception as exc:
-        raise DataCleaningError(f"Failed to save cleaned data to '{out_path}': {exc}") from exc
-
-    logger.info("Saved cleaned data: path=%s shape=%s", out_path, df_clean.shape)
-    return out_path
+    # TODO: replace with logging later
+    print(f"[clean_data.clean_dataframe] Rows after cleaning: {len(df_clean)}")
+    return df_clean
