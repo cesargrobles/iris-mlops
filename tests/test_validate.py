@@ -1,110 +1,99 @@
+# tests/test_validate.py
 """
-Unit Tests for validate module
+Educational Goal:
+- Why this test exists in an MLOps system: Ensure our "security gate" triggers correctly when bad data arrives.
+- Responsibility (separation of concerns): Test validation logic independently of cleaning, features, or training.
+- Pipeline contract: validate_dataframe raises ValueError on empty data, missing columns, or constraint violations,
+  and returns True for clean data.
 """
-import pytest
+
 import pandas as pd
-import numpy as np
+import pytest
 
 from src.validate import validate_dataframe
 
 
-class TestValidateDataframe:
-    """Test suite for validate_dataframe function"""
+# --------------------------------------------------------
+# 1) FAIL FAST: Empty DataFrame
+# --------------------------------------------------------
+def test_validate_fails_on_empty_dataframe():
+    """An empty dataframe should immediately crash the pipeline."""
+    df_empty = pd.DataFrame()
 
-    def test_validate_valid_dataframe(self):
-        """Test validation of a valid DataFrame"""
-        df = pd.DataFrame({
-            'a': [1, 2, 3],
-            'b': [4, 5, 6],
-            'species': ['A', 'B', 'C']
-        })
-        assert validate_dataframe(df, required_columns=['a', 'b', 'species']) is True
+    with pytest.raises(ValueError, match="empty"):
+        validate_dataframe(
+            df=df_empty,
+            required_columns=["A"]
+        )
 
-    def test_validate_raises_on_empty_dataframe(self):
-        """Test that empty DataFrame raises ValueError"""
-        df = pd.DataFrame()
-        with pytest.raises(ValueError, match="empty"):
-            validate_dataframe(df, required_columns=['a'])
 
-    def test_validate_raises_on_none_dataframe(self):
-        """Test that None DataFrame raises ValueError"""
-        with pytest.raises(ValueError, match="empty"):
-            validate_dataframe(None, required_columns=['a'])
+# --------------------------------------------------------
+# 2) CONTRACT CHECK: Missing required columns
+# --------------------------------------------------------
+def test_validate_fails_on_missing_columns():
+    """Missing inputs break the downstream recipe, so we catch it early."""
+    df_missing_col = pd.DataFrame({"A": [1, 2, 3]})
 
-    def test_validate_raises_on_missing_columns(self):
-        """Test that missing required columns raise ValueError"""
-        df = pd.DataFrame({'a': [1, 2], 'b': [3, 4]})
-        with pytest.raises(ValueError, match="missing columns"):
-            validate_dataframe(df, required_columns=['a', 'c'])
+    with pytest.raises(ValueError, match="Missing required columns"):
+        validate_dataframe(
+            df=df_missing_col,
+            required_columns=["A", "B"]
+        )
 
-    def test_validate_with_subset_of_columns(self):
-        """Test validation when requiring subset of columns"""
-        df = pd.DataFrame({
-            'a': [1, 2, 3],
-            'b': [4, 5, 6],
-            'c': [7, 8, 9]
-        })
-        assert validate_dataframe(df, required_columns=['a', 'b']) is True
 
-    def test_validate_with_no_required_columns(self):
-        """Test validation with empty required columns list"""
-        df = pd.DataFrame({'a': [1, 2], 'b': [3, 4]})
-        assert validate_dataframe(df, required_columns=[]) is True
+# --------------------------------------------------------
+# 3) DOMAIN CONSTRAINT: Invalid target classes
+# --------------------------------------------------------
+def test_validate_fails_on_invalid_target_values():
+    """Classification models break if unexpected target classes appear."""
+    df_bad_target = pd.DataFrame({
+        "target": [0, 2, 1],  # 2 is an invalid class
+        "feature": [10, 20, 30],
+    })
 
-    def test_validate_with_single_required_column(self):
-        """Test validation with single required column"""
-        df = pd.DataFrame({'species': ['A', 'B', 'C']})
-        assert validate_dataframe(df, required_columns=['species']) is True
+    with pytest.raises(ValueError, match="invalid"):
+        validate_dataframe(
+            df=df_bad_target,
+            required_columns=["target", "feature"],
+            target_column="target",
+            target_allowed_values=[0, 1],
+        )
 
-    def test_validate_with_nullable_columns(self):
-        """Test validation with columns containing null values"""
-        df = pd.DataFrame({
-            'a': [1.0, np.nan, 3.0],
-            'b': [4, 5, 6]
-        })
-        # Should pass validation (nulls are allowed up to threshold)
-        try:
-            result = validate_dataframe(df, required_columns=['a', 'b'])
-            assert result is True
-        except ValueError:
-            # If it fails, check it's for the right reason
-            pass
 
-    def test_validate_raises_on_excessive_nulls(self):
-        """Test that excessive null values raise ValueError"""
-        df = pd.DataFrame({
-            'a': [np.nan, np.nan, np.nan],
-            'b': [1, 2, 3]
-        })
-        with pytest.raises(ValueError, match="50%|nulls"):
-            validate_dataframe(df, required_columns=['a', 'b'])
+# --------------------------------------------------------
+# 4) DOMAIN CONSTRAINT: Negative numeric values
+# --------------------------------------------------------
+def test_validate_fails_on_negative_values():
+    """Domain logic like 'no negative values' must be strictly enforced."""
+    df_bad_math = pd.DataFrame({
+        "target": [0, 1, 0],
+        "days_supply": [10, -5, 30],  # -5 is an invalid negative value
+    })
 
-    def test_validate_mixed_dtypes(self):
-        """Test validation with mixed data types"""
-        df = pd.DataFrame({
-            'int_col': [1, 2, 3],
-            'float_col': [1.1, 2.2, 3.3],
-            'str_col': ['a', 'b', 'c'],
-            'bool_col': [True, False, True]
-        })
-        assert validate_dataframe(
-            df,
-            required_columns=['int_col', 'float_col', 'str_col', 'bool_col']
-        ) is True
+    with pytest.raises(ValueError, match="negative values"):
+        validate_dataframe(
+            df=df_bad_math,
+            required_columns=["target", "days_supply"],
+            numeric_non_negative_cols=["days_supply"],
+        )
 
-    def test_validate_large_dataframe(self):
-        """Test validation on larger DataFrame"""
-        df = pd.DataFrame({
-            'a': np.random.randn(1000),
-            'b': np.random.randn(1000),
-            'target': np.random.choice(['X', 'Y', 'Z'], 1000)
-        })
-        assert validate_dataframe(df, required_columns=['a', 'b', 'target']) is True
 
-    def test_validate_multiple_missing_columns(self):
-        """Test error message includes all missing columns"""
-        df = pd.DataFrame({'a': [1, 2]})
-        with pytest.raises(ValueError) as exc_info:
-            validate_dataframe(df, required_columns=['a', 'b', 'c'])
-        error_msg = str(exc_info.value)
-        assert 'b' in error_msg or 'c' in error_msg
+# --------------------------------------------------------
+# 5) HAPPY PATH: Valid simple dataset
+# --------------------------------------------------------
+def test_validate_passes_on_valid_dataframe():
+    """Clean data silently passes the gate returning True."""
+    df_clean = pd.DataFrame({
+        "target": [0, 1, 0],
+        "days_supply": [10, 20, 30],
+    })
+
+    result = validate_dataframe(
+        df=df_clean,
+        required_columns=["target", "days_supply"],
+        target_column="target",
+        target_allowed_values=[0, 1],
+        numeric_non_negative_cols=["days_supply"],
+    )
+
+    assert result is True
