@@ -1,8 +1,9 @@
+# src/main.py
 """
 Educational Goal:
-- Why this module exists in an MLOps system: One readable entrypoint makes runs repeatable (local, CI, schedulers).
-- Responsibility (separation of concerns): Orchestrate steps without hiding logic in abstractions.
-- Pipeline contract (inputs and outputs): raw -> clean.csv, model.joblib, predictions.csv
+- Why this module exists in an MLOps system: Orchestrate the pipeline in a readable entry point.
+- Responsibility (separation of concerns): Coordinate steps, handle splits, inject configuration, and delegate work to modules.
+- Pipeline contract (inputs and outputs): Produces a cleaned dataset, a trained pipeline artifact, and an inference predictions artifact.
 
 TODO: Replace print statements with standard library logging in a later session
 TODO: Any temporary or hardcoded variable or parameter will be imported from config.yml in a later session
@@ -13,162 +14,247 @@ from pathlib import Path
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
-from src.clean_data import clean_data
+from src.clean_data import clean_dataframe
 from src.evaluate import evaluate_model
 from src.features import get_feature_preprocessor
 from src.infer import run_inference
-from src.load_data import load_data
+from src.load_data import load_raw_data
 from src.train import train_model
 from src.utils import save_csv, save_model
-# validate_dataframe removed since validate module currently has no implementation
+from src.validate import validate_dataframe
 
+# --------------------------------------------------------
+# PATHS & CONFIGURATION
+# --------------------------------------------------------
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
 
+RAW_DATA_PATH = PROJECT_ROOT / "data" / "raw" / "iris.csv"
+CLEAN_DATA_PATH = PROJECT_ROOT / "data" / "processed" / "clean.csv"
+MODEL_PATH = PROJECT_ROOT / "models" / "model.joblib"
+PREDICTIONS_PATH = PROJECT_ROOT / "reports" / "predictions.csv"
 
 SETTINGS = {
-    "is_example_config": True,
-    "problem_type": "classification",  # iris is classification: species
-    "random_seed": 42,
-    "test_size": 0.2,
+    "is_example_config": False,
     "target_column": "species",
-    "data": {
-        # load_data accepts either a csv path or a seaborn dataset name
-        # using the iris dataset from seaborn for tutorial reproducibility
-        "source": "seaborn",
-        "dataset_name": "iris",
-        # path where cleaned data should be stored (required by clean_data)
-        "processed": "data/processed/clean.csv",
-    },
-    "cleaning": {
-        # optional cleaning settings may be added here later
-    },
-    "paths": {
-        "raw_data": "data/raw/iris.csv",
-        "clean_data": "data/processed/clean.csv",
-        "model": "models/model.joblib",
-        "predictions": "reports/predictions.csv",
-    },
+    "problem_type": "classification",
+    "split": {"test_size": 0.10, "val_size": 0.20, "random_state": 42},
     "features": {
-        # Iris has 4 numeric columns; we’ll demonstrate quantile binning on all 4.
         "quantile_bin": ["sepal_length", "sepal_width", "petal_length", "petal_width"],
         "categorical_onehot": [],
         "numeric_passthrough": [],
+        "binary_sum_cols": [],
         "n_bins": 3,
+    },
+    "validation": {
+        "numeric_non_negative_cols": ["sepal_length", "sepal_width", "petal_length", "petal_width"],
     },
 }
 
 
-def main():
+def _three_way_split(
+    X: pd.DataFrame,
+    y: pd.Series,
+    *,
+    test_size: float,
+    val_size: float,
+    random_state: int,
+    stratify: bool,
+):
     """
-    Inputs:
-    - None (uses SETTINGS and filesystem)
-    Outputs:
-    - None (writes artifacts + prints metric)
     Why this contract matters for reliable ML delivery:
-    - One entrypoint enables repeatable execution in CI and future orchestration tools.
+    - Train learns, validation guides decisions, test audits the final result
     """
-    print("[main.main] Starting iris pipeline")  # TODO: replace with logging later
+    if test_size <= 0 or val_size <= 0 or (test_size + val_size) >= 1.0:
+        raise ValueError(
+            "Fatal: split sizes must satisfy 0 < test_size, 0 < val_size, and test_size + val_size < 1"
+        )
 
-    # 1) Ensure directories
-    print("[main.main] Ensuring directories exist")  # TODO: replace with logging later
-    Path("data/raw").mkdir(parents=True, exist_ok=True)
-    Path("data/processed").mkdir(parents=True, exist_ok=True)
-    Path("models").mkdir(parents=True, exist_ok=True)
-    Path("reports").mkdir(parents=True, exist_ok=True)
+    stratify_y = y if stratify else None
 
-    # 2) Loud config reminder
-    if SETTINGS.get("is_example_config", False):
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        print("LOUD WARNING: Example SETTINGS are active (iris tutorial).")
-        print("You must update SETTINGS for your real dataset later.")
-        print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-
-    # --------------------------------------------------------
-    # START STUDENT CODE
-    # --------------------------------------------------------
-    # TODO_STUDENT: Load SETTINGS from config.yaml in production:
-    # import yaml
-    # with open('config.yaml') as f:
-    #     SETTINGS = yaml.safe_load(f)['pipeline']
-    # For now, hardcoded SETTINGS are used for the tutorial.
-    # --------------------------------------------------------
-    # END STUDENT CODE
-    # --------------------------------------------------------
-
-    # 3) Load data using config-driven loader
-    df_raw = load_data(SETTINGS)
-
-    # 4) Clean using config (clean_data expects the same SETTINGS dict)
-    target_col = SETTINGS["target_column"]
-    df_clean = clean_data(df_raw, SETTINGS)
-
-    # 5) Save processed
-    save_csv(df_clean, Path(SETTINGS["paths"]["clean_data"]))
-
-    # 6) Basic validation (module stubbed out)
-    # simple check because src.validate currently has no implementation
-    if df_clean is None or len(df_clean) == 0:
-        raise ValueError("Validation failed: cleaned DataFrame is empty.")
-    feat = SETTINGS["features"]
-
-    # 7) Split BEFORE fitting features (leakage prevention)
-    print("[main.main] Train/test split (before fitting preprocessors)")  # TODO: replace with logging later
-    X = df_clean.drop(columns=[target_col])
-    y = df_clean[target_col]
-
-    stratify = y if SETTINGS["problem_type"] == "classification" else None
     try:
-        X_train, X_test, y_train, y_test = train_test_split(
+        X_temp, X_test, y_temp, y_test = train_test_split(
             X,
             y,
-            test_size=SETTINGS["test_size"],
-            random_state=SETTINGS["random_seed"],
-            stratify=stratify,
+            test_size=test_size,
+            random_state=random_state,
+            stratify=stratify_y,
         )
+
+        relative_val_size = val_size / (1.0 - test_size)
+        stratify_temp = y_temp if stratify else None
+
+        X_train, X_val, y_train, y_val = train_test_split(
+            X_temp,
+            y_temp,
+            test_size=relative_val_size,
+            random_state=random_state,
+            stratify=stratify_temp,
+        )
+
+        return X_train, X_val, X_test, y_train, y_val, y_test
+
     except ValueError as e:
-        print(f"[main.main] Stratify failed ({e}) -> fallback without stratify")  # TODO: replace with logging later
-        X_train, X_test, y_train, y_test = train_test_split(
+        print(
+            f"[main] Warning: Stratified split failed: {e}. Falling back to random split.")
+
+        X_temp, X_test, y_temp, y_test = train_test_split(
             X,
             y,
-            test_size=SETTINGS["test_size"],
-            random_state=SETTINGS["random_seed"],
-            stratify=None,
+            test_size=test_size,
+            random_state=random_state,
         )
 
-    # 8) Fail-fast feature checks
-    print("[main.main] Fail-fast feature checks")  # TODO: replace with logging later
-    configured = feat["quantile_bin"] + feat["categorical_onehot"] + feat["numeric_passthrough"]
-    missing = [c for c in configured if c not in X_train.columns]
-    if missing:
-        raise ValueError(f"Configured feature columns missing in X_train: {missing}")
+        relative_val_size = val_size / (1.0 - test_size)
+        X_train, X_val, y_train, y_val = train_test_split(
+            X_temp,
+            y_temp,
+            test_size=relative_val_size,
+            random_state=random_state,
+        )
 
-    for c in feat["quantile_bin"]:
-        if not pd.api.types.is_numeric_dtype(X_train[c]):
-            raise ValueError(f"Column '{c}' is in quantile_bin but is not numeric.")
+        return X_train, X_val, X_test, y_train, y_val, y_test
 
-    # 9) Build feature recipe (unfitted)
-    preprocessor = get_feature_preprocessor(
-        quantile_bin_cols=feat["quantile_bin"],
-        categorical_onehot_cols=feat["categorical_onehot"],
-        numeric_passthrough_cols=feat["numeric_passthrough"],
-        n_bins=feat["n_bins"],
+
+def _get_feature_columns_from_settings() -> list:
+    cols = (
+        SETTINGS["features"]["quantile_bin"]
+        + SETTINGS["features"]["categorical_onehot"]
+        + SETTINGS["features"]["numeric_passthrough"]
+        + SETTINGS["features"]["binary_sum_cols"]
+    )
+    return list(dict.fromkeys(cols))
+
+
+def main():
+    print("[main.main] Starting pipeline")
+
+    if SETTINGS.get("is_example_config", False):
+        raise ValueError(
+            "Fatal: SETTINGS is an example. Update target_column and feature lists for your dataset, "
+            "then set 'is_example_config': False"
+        )
+
+    # 1) LOAD
+    print("[main.main] 1) LOAD")
+    df_raw = load_raw_data(RAW_DATA_PATH)
+
+    # 2) CLEAN (training mode, target required)
+    print("[main.main] 2) CLEAN (TRAINING DATA)")
+    df_clean = clean_dataframe(df_raw, target_column=SETTINGS["target_column"])
+
+    # 3) SAVE PROCESSED CSV
+    print("[main.main] 3) SAVE PROCESSED CSV")
+    save_csv(df_clean, CLEAN_DATA_PATH)
+
+    # 4) VALIDATE (training mode)
+    print("[main.main] 4) VALIDATE (TRAINING DATA)")
+    required_columns = [SETTINGS["target_column"]] + \
+        _get_feature_columns_from_settings()
+
+    # For iris, target_allowed_values are the species names
+    target_allowed = ["setosa", "versicolor", "virginica"] if SETTINGS["problem_type"] == "classification" else None
+
+    validate_dataframe(
+        df=df_clean,
+        required_columns=required_columns,
+        check_missing_values=False,
+        target_column=SETTINGS["target_column"],
+        target_allowed_values=target_allowed,
+        numeric_non_negative_cols=SETTINGS["validation"]["numeric_non_negative_cols"],
     )
 
-    # 10) Train
-    model = train_model(X_train=X_train, y_train=y_train, preprocessor=preprocessor, problem_type=SETTINGS["problem_type"])
+    # 5) SPLIT
+    print("[main.main] 5) SPLIT INTO TRAIN, VALIDATION, TEST")
+    X_full = df_clean.drop(columns=[SETTINGS["target_column"]])
+    y = df_clean[SETTINGS["target_column"]]
 
-    # 11) Save model
-    save_model(model, Path(SETTINGS["paths"]["model"]))
+    X_train, X_val, X_test, y_train, y_val, y_test = _three_way_split(
+        X_full,
+        y,
+        test_size=SETTINGS["split"]["test_size"],
+        val_size=SETTINGS["split"]["val_size"],
+        random_state=SETTINGS["split"]["random_state"],
+        stratify=(SETTINGS["problem_type"] == "classification"),
+    )
 
-    # 12) Evaluate
-    score = evaluate_model(model, X_test=X_test, y_test=y_test, problem_type=SETTINGS["problem_type"])
-    print(f"[main.main] Test weighted F1: {score:.4f}")  # TODO: replace with logging later
+    print("[main.main] Split sizes")
+    print("Train:", X_train.shape, "Validation:",
+          X_val.shape, "Test:", X_test.shape)
 
-    # 13) Inference
-    preds = run_inference(model, X_test)  # run_inference signature expects (model, X)
-    # 14) Save predictions
-    save_csv(preds, Path(SETTINGS["paths"]["predictions"]))
+    if len(X_test) == 0:
+        raise ValueError(
+            "Fatal: test split is empty. Check split ratios and dataset size.")
 
-    print("[main.main] Done. Wrote clean.csv, model.joblib, predictions.csv")  # TODO: replace with logging later
+    # 6) FAIL FAST FEATURE CHECKS
+    configured_cols = _get_feature_columns_from_settings()
+    if not configured_cols:
+        raise ValueError(
+            "Fatal: No feature columns configured in SETTINGS['features']")
+
+    missing = set(configured_cols) - set(X_train.columns)
+    if missing:
+        raise ValueError(
+            f"Fatal: Configured columns not found in dataset: {sorted(missing)}")
+
+    for col in SETTINGS["features"]["quantile_bin"]:
+        if not pd.api.types.is_numeric_dtype(X_train[col]):
+            raise ValueError(
+                f"Fatal: Column '{col}' must be numeric for quantile binning. Found dtype={X_train[col].dtype}"
+            )
+
+    # 7) BUILD FEATURE RECIPE
+    print("[main.main] 7) BUILD FEATURE RECIPE")
+    preprocessor = get_feature_preprocessor(
+        quantile_bin_cols=SETTINGS["features"]["quantile_bin"],
+        categorical_onehot_cols=SETTINGS["features"]["categorical_onehot"],
+        numeric_passthrough_cols=SETTINGS["features"]["numeric_passthrough"],
+        binary_sum_cols=SETTINGS["features"]["binary_sum_cols"],
+        n_bins=SETTINGS["features"]["n_bins"],
+    )
+
+    # 8) TRAIN
+    print("[main.main] 8) TRAIN")
+    model_pipeline = train_model(
+        X_train=X_train,
+        y_train=y_train,
+        preprocessor=preprocessor,
+        problem_type=SETTINGS["problem_type"],
+    )
+
+    # 8.5) EVALUATE on validation set
+    print("[main.main] 8.5) EVALUATE (VALIDATION)")
+    val_metrics = evaluate_model(
+        model=model_pipeline,
+        X_eval=X_val,
+        y_eval=y_val,
+        problem_type=SETTINGS["problem_type"],
+    )
+    print(f"[main.main] Validation metrics={val_metrics}")
+
+    # 9) SAVE MODEL
+    print("[main.main] 9) SAVE MODEL")
+    save_model(model_pipeline, MODEL_PATH)
+
+    # 10) INFERENCE on test set
+    print("[main.main] 10) INFERENCE (TEST SET)")
+    df_predictions = run_inference(
+        model=model_pipeline,
+        X_infer=X_test,
+        include_proba=(SETTINGS["problem_type"] == "classification"),
+    )
+
+    print("[main.main] Inference results")
+    print(df_predictions.head(10))
+
+    # Persist predictions as artifact
+    save_csv(df_predictions, PREDICTIONS_PATH)
+
+    print(f"[main.main] Wrote predictions artifact to {PREDICTIONS_PATH}")
+
+    print("[main.main] Done")
+    print(f"[main.main] Wrote {CLEAN_DATA_PATH}")
+    print(f"[main.main] Wrote {MODEL_PATH}")
+    print(f"[main.main] Wrote {PREDICTIONS_PATH}")
 
 
 if __name__ == "__main__":
