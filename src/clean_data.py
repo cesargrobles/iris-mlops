@@ -17,7 +17,6 @@ import pandas as pd
 
 
 def clean_dataframe(df_raw: pd.DataFrame, target_column: Optional[str] = None) -> pd.DataFrame:
-    
     """
     One cleaner for both training and inference.
 
@@ -55,7 +54,6 @@ def clean_dataframe(df_raw: pd.DataFrame, target_column: Optional[str] = None) -
     # Drop exact duplicates across all columns (including ID if present)
     df_clean = df_clean.drop_duplicates()
 
-<<<<<<< HEAD
     if target_column is not None:
         # Standardize target name to match standardized headers
         target_column_std = (
@@ -63,12 +61,6 @@ def clean_dataframe(df_raw: pd.DataFrame, target_column: Optional[str] = None) -
             .strip()
             .replace(" ", "_")
         )
-=======
-def clean_data(df: pd.DataFrame, config: Dict[str, Any]) -> pd.DataFrame:
-    logger.info("Starting clean_data | input_shape=%s", df.shape)
-    """
-    Clean and stabilize the raw dataset.
->>>>>>> group/dev
 
         if not target_column_std:
             raise ValueError("target_column is empty after standardization")
