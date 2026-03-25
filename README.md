@@ -146,8 +146,21 @@ python -m pytest -q
 ### Step 4: Execute the Orchestrator
 Run the full end-to-end pipeline — cleans data, trains the model, and generates artifacts:
 ```
-python -m src.main
+python -m src.main --config config.yaml
 ```
+
+### FastAPI server
+Start the API server with:
+```
+uvicorn src.api:app --host 0.0.0.0 --port 8080
+```
+
+Test health and predict endpoints:
+```
+curl http://localhost:8080/health
+curl -X POST -H "Content-Type: application/json" -d '{"instances":[{"sepal_length":5.0,"sepal_width":3.5,"petal_length":1.3,"petal_width":0.3}]}' http://localhost:8080/predict
+```
+
 > **Note:** You may see a `FutureWarning` from scikit-learn related to `KBinsDiscretizer`. This is not an error — it is a deprecation notice about a default parameter that will change in sklearn 1.9. The pipeline runs correctly and all outputs are generated as expected.
 
 ---
@@ -157,3 +170,4 @@ python -m src.main
 1. `data/processed/clean.csv` — the deterministically cleaned input data
 2. `models/model.joblib` — the deployable pipeline artifact (preprocessor + classifier)
 3. `reports/predictions.csv` — the inference log containing predictions and class probabilities
+# iris-mlops
