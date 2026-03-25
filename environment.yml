@@ -1,4 +1,4 @@
-name: mlops-kickoff
+name: mlops-kickoff-2
 channels:
   - conda-forge
   - defaults
@@ -17,3 +17,9 @@ dependencies:
   - pytest
   - pytest-cov
   - pip
+  - pyyaml
+
+  - pip:
+    - fastapi
+    - uvicorn[standard]
+    - wandb

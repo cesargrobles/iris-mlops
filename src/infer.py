@@ -12,6 +12,10 @@ TODO: Move any hardcoded configurations to config.yml in a later session
 import numpy as np
 import pandas as pd
 
+from src.logger import get_logger
+
+logger = get_logger(__name__)
+
 
 def run_inference(model, X_infer: pd.DataFrame, *, include_proba: bool = False) -> pd.DataFrame:
     """
@@ -30,7 +34,7 @@ def run_inference(model, X_infer: pd.DataFrame, *, include_proba: bool = False) 
     - Preserving the index allows predictions to be joined back to the original database records.
     - Defensive shape checking on probabilities prevents silent downstream crashes.
     """
-    print("[infer.run_inference] Running inference")
+    logger.info("[infer.run_inference] Running inference")
 
     # 1) Fail-fast structural guardrails
     if X_infer is None or len(X_infer) == 0:

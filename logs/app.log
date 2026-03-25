@@ -1,0 +1,433 @@
+2026-03-24 19:50:53,174 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:50:53,176 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'pr_auc': 0.5, 'roc_auc': 0.5}
+2026-03-24 19:50:53,178 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:50:53,178 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'rmse': 1.118033988749895}
+2026-03-24 19:50:53,179 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:50:53,180 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:50:53,180 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:50:53,180 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:50:53,185 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:50:53,191 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:50:53,195 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:50:53,196 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:50:53,197 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:50:53,198 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:50:53,198 [INFO] src.utils - [utils.load_csv] Loading CSV from data/raw/iris.csv
+2026-03-24 19:50:53,227 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-21/test_load_raw_data_raises_on_e0/header_only.csv
+2026-03-24 19:50:53,227 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-21/test_load_raw_data_raises_on_e0/truly_empty.csv
+2026-03-24 19:50:53,310 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:50:53,319 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:50:53,319 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:50:53,320 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-21/test_save_and_load_csv_roundtr0/nested/sample.csv
+2026-03-24 19:50:53,321 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-21/test_save_and_load_csv_roundtr0/nested/sample.csv
+2026-03-24 19:50:53,322 [INFO] src.utils - [utils.load_csv] Loading CSV from not_a_path
+2026-03-24 19:50:53,322 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-21/test_load_csv_rejects_director0/some_dir
+2026-03-24 19:50:53,323 [INFO] src.utils - [utils.load_model] Loading model from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-21/test_load_model_missing_file_r0/models/missing.joblib
+2026-03-24 19:50:53,323 [INFO] src.utils - [utils.save_model] Saving model to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-21/test_save_and_load_model_round0/models/model.joblib
+2026-03-24 19:50:53,323 [INFO] src.utils - [utils.load_model] Loading model from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-21/test_save_and_load_model_round0/models/model.joblib
+2026-03-24 19:52:08,893 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:08,895 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'pr_auc': 0.5, 'roc_auc': 0.5}
+2026-03-24 19:52:08,896 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:08,896 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'rmse': 1.118033988749895}
+2026-03-24 19:52:08,896 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:08,897 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:08,897 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:08,897 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:08,899 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:08,899 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:08,900 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:08,901 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:08,901 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:08,902 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:08,902 [INFO] src.utils - [utils.load_csv] Loading CSV from data/raw/iris.csv
+2026-03-24 19:52:08,924 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-22/test_load_raw_data_raises_on_e0/header_only.csv
+2026-03-24 19:52:08,925 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-22/test_load_raw_data_raises_on_e0/truly_empty.csv
+2026-03-24 19:52:08,963 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:52:08,968 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:52:08,969 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:52:08,969 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-22/test_save_and_load_csv_roundtr0/nested/sample.csv
+2026-03-24 19:52:08,970 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-22/test_save_and_load_csv_roundtr0/nested/sample.csv
+2026-03-24 19:52:08,970 [INFO] src.utils - [utils.load_csv] Loading CSV from not_a_path
+2026-03-24 19:52:08,971 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-22/test_load_csv_rejects_director0/some_dir
+2026-03-24 19:52:08,971 [INFO] src.utils - [utils.load_model] Loading model from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-22/test_load_model_missing_file_r0/models/missing.joblib
+2026-03-24 19:52:08,972 [INFO] src.utils - [utils.save_model] Saving model to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-22/test_save_and_load_model_round0/models/model.joblib
+2026-03-24 19:52:08,972 [INFO] src.utils - [utils.load_model] Loading model from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-22/test_save_and_load_model_round0/models/model.joblib
+2026-03-24 19:52:22,586 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:22,588 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'pr_auc': 0.5, 'roc_auc': 0.5}
+2026-03-24 19:52:22,589 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:22,589 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'rmse': 1.118033988749895}
+2026-03-24 19:52:22,590 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:22,590 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:22,591 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:22,591 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:22,592 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:22,593 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:22,594 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:22,594 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:22,595 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:22,596 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:22,596 [INFO] src.utils - [utils.load_csv] Loading CSV from data/raw/iris.csv
+2026-03-24 19:52:22,611 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-23/test_load_raw_data_raises_on_e0/header_only.csv
+2026-03-24 19:52:22,612 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-23/test_load_raw_data_raises_on_e0/truly_empty.csv
+2026-03-24 19:52:22,617 [INFO] src.main - [main] Starting pipeline
+2026-03-24 19:52:22,618 [INFO] src.utils - [utils.load_csv] Loading CSV from data/raw/iris.csv
+2026-03-24 19:52:22,620 [INFO] src.utils - [utils.save_csv] Saving CSV to data/processed/clean.csv
+2026-03-24 19:52:22,622 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:52:22,631 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:22,635 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'roc_auc': 0.9883333333333334, 'f1_weighted': 0.9665831244778613}
+2026-03-24 19:52:22,635 [INFO] src.main - [main] Validation metrics={'roc_auc': 0.9883333333333334, 'f1_weighted': 0.9665831244778613}
+2026-03-24 19:52:22,635 [INFO] src.utils - [utils.save_model] Saving model to models/model.joblib
+2026-03-24 19:52:22,636 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:22,641 [INFO] src.utils - [utils.save_csv] Saving CSV to reports/predictions.csv
+2026-03-24 19:52:22,642 [INFO] src.main - [main] Done. Model=models/model.joblib, predictions=reports/predictions.csv
+2026-03-24 19:52:22,686 [INFO] src.main - [main] Starting pipeline
+2026-03-24 19:52:22,688 [INFO] src.utils - [utils.load_csv] Loading CSV from data/raw/iris.csv
+2026-03-24 19:52:22,690 [INFO] src.utils - [utils.save_csv] Saving CSV to data/processed/clean.csv
+2026-03-24 19:52:22,697 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:52:22,720 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:22,726 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'roc_auc': 0.9883333333333334, 'f1_weighted': 0.9665831244778613}
+2026-03-24 19:52:22,726 [INFO] src.main - [main] Validation metrics={'roc_auc': 0.9883333333333334, 'f1_weighted': 0.9665831244778613}
+2026-03-24 19:52:22,726 [INFO] src.utils - [utils.save_model] Saving model to models/model.joblib
+2026-03-24 19:52:22,727 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:22,729 [INFO] src.utils - [utils.save_csv] Saving CSV to reports/predictions.csv
+2026-03-24 19:52:22,730 [INFO] src.main - [main] Done. Model=models/model.joblib, predictions=reports/predictions.csv
+2026-03-24 19:52:22,731 [INFO] src.main - [main] Starting pipeline
+2026-03-24 19:52:22,732 [INFO] src.utils - [utils.load_csv] Loading CSV from data/raw/iris.csv
+2026-03-24 19:52:22,734 [INFO] src.utils - [utils.save_csv] Saving CSV to data/processed/clean.csv
+2026-03-24 19:52:22,735 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:52:22,739 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:22,744 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'roc_auc': 0.9883333333333334, 'f1_weighted': 0.9665831244778613}
+2026-03-24 19:52:22,744 [INFO] src.main - [main] Validation metrics={'roc_auc': 0.9883333333333334, 'f1_weighted': 0.9665831244778613}
+2026-03-24 19:52:22,744 [INFO] src.utils - [utils.save_model] Saving model to models/model.joblib
+2026-03-24 19:52:22,745 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:22,748 [INFO] src.utils - [utils.save_csv] Saving CSV to reports/predictions.csv
+2026-03-24 19:52:22,748 [INFO] src.main - [main] Done. Model=models/model.joblib, predictions=reports/predictions.csv
+2026-03-24 19:52:22,750 [INFO] src.main - [main] Starting pipeline
+2026-03-24 19:52:22,752 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:52:22,756 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:52:22,757 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:52:22,758 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-23/test_save_and_load_csv_roundtr0/nested/sample.csv
+2026-03-24 19:52:22,759 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-23/test_save_and_load_csv_roundtr0/nested/sample.csv
+2026-03-24 19:52:22,760 [INFO] src.utils - [utils.load_csv] Loading CSV from not_a_path
+2026-03-24 19:52:22,760 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-23/test_load_csv_rejects_director0/some_dir
+2026-03-24 19:52:22,761 [INFO] src.utils - [utils.load_model] Loading model from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-23/test_load_model_missing_file_r0/models/missing.joblib
+2026-03-24 19:52:22,761 [INFO] src.utils - [utils.save_model] Saving model to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-23/test_save_and_load_model_round0/models/model.joblib
+2026-03-24 19:52:22,762 [INFO] src.utils - [utils.load_model] Loading model from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-23/test_save_and_load_model_round0/models/model.joblib
+2026-03-24 19:52:56,064 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:56,066 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'pr_auc': 0.5, 'roc_auc': 0.5}
+2026-03-24 19:52:56,066 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:56,066 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'rmse': 1.118033988749895}
+2026-03-24 19:52:56,067 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:56,067 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:56,067 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:56,068 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:56,069 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:56,070 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:56,071 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:56,072 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:56,072 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:56,073 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:56,073 [INFO] src.utils - [utils.load_csv] Loading CSV from data/raw/iris.csv
+2026-03-24 19:52:56,097 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-24/test_load_raw_data_raises_on_e0/header_only.csv
+2026-03-24 19:52:56,097 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-24/test_load_raw_data_raises_on_e0/truly_empty.csv
+2026-03-24 19:52:56,103 [INFO] src.main - [main] Starting pipeline
+2026-03-24 19:52:56,104 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-24/test_main_end_to_end_creates_c0/data/raw/iris.csv
+2026-03-24 19:52:56,105 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-24/test_main_end_to_end_creates_c0/data/processed/clean.csv
+2026-03-24 19:52:56,108 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:52:56,116 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:56,119 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'roc_auc': 0.5616359447004607, 'f1_weighted': 0.3543462762478043}
+2026-03-24 19:52:56,119 [INFO] src.main - [main] Validation metrics={'roc_auc': 0.5616359447004607, 'f1_weighted': 0.3543462762478043}
+2026-03-24 19:52:56,119 [INFO] src.utils - [utils.save_model] Saving model to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-24/test_main_end_to_end_creates_c0/models/model.joblib
+2026-03-24 19:52:56,120 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:56,122 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-24/test_main_end_to_end_creates_c0/reports/predictions.csv
+2026-03-24 19:52:56,123 [INFO] src.main - [main] Done. Model=/private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-24/test_main_end_to_end_creates_c0/models/model.joblib, predictions=/private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-24/test_main_end_to_end_creates_c0/reports/predictions.csv
+2026-03-24 19:52:56,127 [INFO] src.main - [main] Starting pipeline
+2026-03-24 19:52:56,128 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-24/test_main_calls_evaluate_and_i0/data/raw/iris.csv
+2026-03-24 19:52:56,130 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-24/test_main_calls_evaluate_and_i0/data/processed/clean.csv
+2026-03-24 19:52:56,132 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:52:56,135 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:52:56,138 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'roc_auc': 0.5616359447004607, 'f1_weighted': 0.3543462762478043}
+2026-03-24 19:52:56,138 [INFO] src.main - [main] Validation metrics={'roc_auc': 0.5616359447004607, 'f1_weighted': 0.3543462762478043}
+2026-03-24 19:52:56,138 [INFO] src.utils - [utils.save_model] Saving model to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-24/test_main_calls_evaluate_and_i0/models/model.joblib
+2026-03-24 19:52:56,140 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:52:56,142 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-24/test_main_calls_evaluate_and_i0/reports/predictions.csv
+2026-03-24 19:52:56,143 [INFO] src.main - [main] Done. Model=/private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-24/test_main_calls_evaluate_and_i0/models/model.joblib, predictions=/private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-24/test_main_calls_evaluate_and_i0/reports/predictions.csv
+2026-03-24 19:52:56,144 [INFO] src.main - [main] Starting pipeline
+2026-03-24 19:52:56,145 [INFO] src.main - [main] Starting pipeline
+2026-03-24 19:52:56,147 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:52:56,149 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:52:56,150 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:52:56,150 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-24/test_save_and_load_csv_roundtr0/nested/sample.csv
+2026-03-24 19:52:56,151 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-24/test_save_and_load_csv_roundtr0/nested/sample.csv
+2026-03-24 19:52:56,151 [INFO] src.utils - [utils.load_csv] Loading CSV from not_a_path
+2026-03-24 19:52:56,152 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-24/test_load_csv_rejects_director0/some_dir
+2026-03-24 19:52:56,152 [INFO] src.utils - [utils.load_model] Loading model from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-24/test_load_model_missing_file_r0/models/missing.joblib
+2026-03-24 19:52:56,153 [INFO] src.utils - [utils.save_model] Saving model to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-24/test_save_and_load_model_round0/models/model.joblib
+2026-03-24 19:52:56,154 [INFO] src.utils - [utils.load_model] Loading model from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-24/test_save_and_load_model_round0/models/model.joblib
+2026-03-24 19:53:05,247 [INFO] __main__ - [main] Starting pipeline
+2026-03-24 19:53:05,248 [INFO] src.utils - [utils.load_csv] Loading CSV from data/raw/iris.csv
+2026-03-24 19:53:05,266 [INFO] src.utils - [utils.save_csv] Saving CSV to data/processed/clean.csv
+2026-03-24 19:53:05,272 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:53:05,279 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:53:05,287 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'roc_auc': 0.9883333333333334, 'f1_weighted': 0.9665831244778613}
+2026-03-24 19:53:05,287 [INFO] __main__ - [main] Validation metrics={'roc_auc': 0.9883333333333334, 'f1_weighted': 0.9665831244778613}
+2026-03-24 19:53:05,287 [INFO] src.utils - [utils.save_model] Saving model to models/model.joblib
+2026-03-24 19:53:05,288 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:53:05,293 [INFO] src.utils - [utils.save_csv] Saving CSV to reports/predictions.csv
+2026-03-24 19:53:05,297 [INFO] __main__ - [main] Done. Model=models/model.joblib, predictions=reports/predictions.csv
+2026-03-24 19:53:56,928 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:53:56,930 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'pr_auc': 0.5, 'roc_auc': 0.5}
+2026-03-24 19:53:56,931 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:53:56,931 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'rmse': 1.118033988749895}
+2026-03-24 19:53:56,931 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:53:56,932 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:53:56,932 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:53:56,932 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:53:56,934 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:53:56,935 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:53:56,936 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:53:56,937 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:53:56,938 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:53:56,939 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:53:56,939 [INFO] src.utils - [utils.load_csv] Loading CSV from data/raw/iris.csv
+2026-03-24 19:53:56,962 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-25/test_load_raw_data_raises_on_e0/header_only.csv
+2026-03-24 19:53:56,962 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-25/test_load_raw_data_raises_on_e0/truly_empty.csv
+2026-03-24 19:53:56,968 [INFO] src.main - [main] Starting pipeline
+2026-03-24 19:53:56,970 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-25/test_main_end_to_end_creates_c0/data/raw/iris.csv
+2026-03-24 19:53:56,971 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-25/test_main_end_to_end_creates_c0/data/processed/clean.csv
+2026-03-24 19:53:56,974 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:53:56,981 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:53:56,985 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'roc_auc': 0.5616359447004607, 'f1_weighted': 0.3543462762478043}
+2026-03-24 19:53:56,985 [INFO] src.main - [main] Validation metrics={'roc_auc': 0.5616359447004607, 'f1_weighted': 0.3543462762478043}
+2026-03-24 19:53:56,985 [INFO] src.utils - [utils.save_model] Saving model to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-25/test_main_end_to_end_creates_c0/models/model.joblib
+2026-03-24 19:53:56,986 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:53:56,988 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-25/test_main_end_to_end_creates_c0/reports/predictions.csv
+2026-03-24 19:53:56,988 [INFO] src.main - [main] Done. Model=/private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-25/test_main_end_to_end_creates_c0/models/model.joblib, predictions=/private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-25/test_main_end_to_end_creates_c0/reports/predictions.csv
+2026-03-24 19:53:56,992 [INFO] src.main - [main] Starting pipeline
+2026-03-24 19:53:56,993 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-25/test_main_calls_evaluate_and_i0/data/raw/iris.csv
+2026-03-24 19:53:56,994 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-25/test_main_calls_evaluate_and_i0/data/processed/clean.csv
+2026-03-24 19:53:56,996 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:53:56,999 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:53:57,001 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'roc_auc': 0.5616359447004607, 'f1_weighted': 0.3543462762478043}
+2026-03-24 19:53:57,001 [INFO] src.main - [main] Validation metrics={'roc_auc': 0.5616359447004607, 'f1_weighted': 0.3543462762478043}
+2026-03-24 19:53:57,001 [INFO] src.utils - [utils.save_model] Saving model to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-25/test_main_calls_evaluate_and_i0/models/model.joblib
+2026-03-24 19:53:57,002 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:53:57,004 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-25/test_main_calls_evaluate_and_i0/reports/predictions.csv
+2026-03-24 19:53:57,004 [INFO] src.main - [main] Done. Model=/private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-25/test_main_calls_evaluate_and_i0/models/model.joblib, predictions=/private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-25/test_main_calls_evaluate_and_i0/reports/predictions.csv
+2026-03-24 19:53:57,005 [INFO] src.main - [main] Starting pipeline
+2026-03-24 19:53:57,008 [INFO] src.main - [main] Starting pipeline
+2026-03-24 19:53:57,009 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:53:57,012 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:53:57,012 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:53:57,013 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-25/test_save_and_load_csv_roundtr0/nested/sample.csv
+2026-03-24 19:53:57,013 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-25/test_save_and_load_csv_roundtr0/nested/sample.csv
+2026-03-24 19:53:57,014 [INFO] src.utils - [utils.load_csv] Loading CSV from not_a_path
+2026-03-24 19:53:57,014 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-25/test_load_csv_rejects_director0/some_dir
+2026-03-24 19:53:57,015 [INFO] src.utils - [utils.load_model] Loading model from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-25/test_load_model_missing_file_r0/models/missing.joblib
+2026-03-24 19:53:57,015 [INFO] src.utils - [utils.save_model] Saving model to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-25/test_save_and_load_model_round0/models/model.joblib
+2026-03-24 19:53:57,015 [INFO] src.utils - [utils.load_model] Loading model from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-25/test_save_and_load_model_round0/models/model.joblib
+2026-03-24 19:54:15,452 [INFO] __main__ - [main] Starting pipeline
+2026-03-24 19:54:15,453 [INFO] src.utils - [utils.load_csv] Loading CSV from data/raw/iris.csv
+2026-03-24 19:54:15,465 [INFO] src.utils - [utils.save_csv] Saving CSV to data/processed/clean.csv
+2026-03-24 19:54:15,469 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 19:54:15,499 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 19:54:15,503 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'roc_auc': 0.9883333333333334, 'f1_weighted': 0.9665831244778613}
+2026-03-24 19:54:15,503 [INFO] __main__ - [main] Validation metrics={'roc_auc': 0.9883333333333334, 'f1_weighted': 0.9665831244778613}
+2026-03-24 19:54:15,503 [INFO] src.utils - [utils.save_model] Saving model to models/model.joblib
+2026-03-24 19:54:15,504 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 19:54:15,509 [INFO] src.utils - [utils.save_csv] Saving CSV to reports/predictions.csv
+2026-03-24 19:54:15,510 [INFO] __main__ - [main] Done. Model=models/model.joblib, predictions=reports/predictions.csv
+2026-03-24 20:05:18,267 [INFO] src.utils - [utils.load_model] Loading model from models/model.joblib
+2026-03-24 20:05:40,443 [ERROR] src.api - Failed to load model: module 'sklearn.compose._column_transformer' has no attribute '_RemainderColsList'
+2026-03-24 20:07:48,859 [INFO] __main__ - [main] Starting pipeline
+2026-03-24 20:07:48,861 [INFO] src.utils - [utils.load_csv] Loading CSV from data/raw/iris.csv
+2026-03-24 20:07:48,863 [INFO] src.utils - [utils.save_csv] Saving CSV to data/processed/clean.csv
+2026-03-24 20:07:48,867 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 20:07:48,872 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 20:07:48,876 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'roc_auc': 0.9883333333333334, 'f1_weighted': 0.9665831244778613}
+2026-03-24 20:07:48,876 [INFO] __main__ - [main] Validation metrics={'roc_auc': 0.9883333333333334, 'f1_weighted': 0.9665831244778613}
+2026-03-24 20:07:48,876 [INFO] src.utils - [utils.save_model] Saving model to models/model.joblib
+2026-03-24 20:07:48,879 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 20:07:48,881 [INFO] src.utils - [utils.save_csv] Saving CSV to reports/predictions.csv
+2026-03-24 20:07:48,882 [INFO] __main__ - [main] Done. Model=models/model.joblib, predictions=reports/predictions.csv
+2026-03-24 20:07:59,098 [INFO] src.utils - [utils.load_model] Loading model from models/model.joblib
+2026-03-24 20:07:59,952 [INFO] src.api - Loaded model from models/model.joblib
+2026-03-24 20:08:56,554 [INFO] src.utils - [utils.load_model] Loading model from models/model.joblib
+2026-03-24 20:08:57,495 [INFO] src.api - Loaded model from models/model.joblib
+2026-03-24 20:10:32,279 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 20:10:34,367 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 20:22:06,599 [INFO] __main__ - [main] Starting pipeline
+2026-03-24 20:22:06,601 [INFO] src.utils - [utils.load_csv] Loading CSV from data/raw/iris.csv
+2026-03-24 20:22:06,630 [INFO] src.utils - [utils.save_csv] Saving CSV to data/processed/clean.csv
+2026-03-24 20:22:06,637 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 20:22:06,655 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 20:22:06,665 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'roc_auc': 0.9883333333333334, 'f1_weighted': 0.9665831244778613}
+2026-03-24 20:22:06,665 [INFO] __main__ - [main] Validation metrics={'roc_auc': 0.9883333333333334, 'f1_weighted': 0.9665831244778613}
+2026-03-24 20:22:06,665 [INFO] src.utils - [utils.save_model] Saving model to models/model.joblib
+2026-03-24 20:22:06,666 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 20:22:06,670 [INFO] src.utils - [utils.save_csv] Saving CSV to reports/predictions.csv
+2026-03-24 20:22:06,671 [INFO] __main__ - [main] Done. Model=models/model.joblib, predictions=reports/predictions.csv
+2026-03-24 21:07:14,918 [INFO] __main__ - [main] Starting pipeline
+2026-03-24 21:07:14,921 [INFO] src.utils - [utils.load_csv] Loading CSV from data/raw/iris.csv
+2026-03-24 21:07:14,928 [INFO] src.utils - [utils.save_csv] Saving CSV to data/processed/clean.csv
+2026-03-24 21:07:14,932 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 21:07:14,940 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 21:07:14,945 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'roc_auc': 0.9883333333333334, 'f1_weighted': 0.9665831244778613}
+2026-03-24 21:07:14,945 [INFO] __main__ - [main] Validation metrics={'roc_auc': 0.9883333333333334, 'f1_weighted': 0.9665831244778613}
+2026-03-24 21:07:14,945 [INFO] src.utils - [utils.save_model] Saving model to models/model.joblib
+2026-03-24 21:07:14,946 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 21:07:14,948 [INFO] src.utils - [utils.save_csv] Saving CSV to reports/predictions.csv
+2026-03-24 21:07:14,948 [INFO] __main__ - [main] Done. Model=models/model.joblib, predictions=reports/predictions.csv
+2026-03-24 21:08:54,751 [INFO] __main__ - [main] Starting pipeline
+2026-03-24 21:08:54,754 [INFO] src.utils - [utils.load_csv] Loading CSV from data/raw/iris.csv
+2026-03-24 21:08:54,761 [INFO] src.utils - [utils.save_csv] Saving CSV to data/processed/clean.csv
+2026-03-24 21:08:54,764 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-24 21:09:24,650 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-24 21:09:27,458 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'roc_auc': 0.9883333333333334, 'f1_weighted': 0.9665831244778613}
+2026-03-24 21:09:27,458 [INFO] __main__ - [main] Validation metrics={'roc_auc': 0.9883333333333334, 'f1_weighted': 0.9665831244778613}
+2026-03-24 21:09:27,459 [INFO] src.utils - [utils.save_model] Saving model to models/model.joblib
+2026-03-24 21:09:34,084 [INFO] __main__ - [main] Logged model artifact to W&B with alias 'prod'.
+2026-03-24 21:09:34,086 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-24 21:09:34,119 [INFO] src.utils - [utils.save_csv] Saving CSV to reports/predictions.csv
+2026-03-24 21:09:34,121 [INFO] __main__ - [main] Done. Model=models/model.joblib, predictions=reports/predictions.csv
+2026-03-25 12:11:36,969 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:11:36,972 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'pr_auc': 0.5, 'roc_auc': 0.5}
+2026-03-25 12:11:36,972 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:11:36,972 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'rmse': 1.118033988749895}
+2026-03-25 12:11:36,973 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:11:36,974 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:11:36,974 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:11:36,974 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:11:36,976 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:11:36,977 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:11:36,978 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:11:36,979 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:11:36,980 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:11:36,980 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:11:36,981 [INFO] src.utils - [utils.load_csv] Loading CSV from data/raw/iris.csv
+2026-03-25 12:11:37,000 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-26/test_load_raw_data_raises_on_e0/header_only.csv
+2026-03-25 12:11:37,001 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-26/test_load_raw_data_raises_on_e0/truly_empty.csv
+2026-03-25 12:11:37,007 [INFO] src.main - [main] Starting pipeline
+2026-03-25 12:11:37,009 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-26/test_main_end_to_end_creates_c0/data/raw/iris.csv
+2026-03-25 12:11:37,010 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-26/test_main_end_to_end_creates_c0/data/processed/clean.csv
+2026-03-25 12:11:37,012 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-25 12:11:37,058 [INFO] src.main - [main] Starting pipeline
+2026-03-25 12:11:37,060 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-26/test_main_calls_evaluate_and_i0/data/raw/iris.csv
+2026-03-25 12:11:37,061 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-26/test_main_calls_evaluate_and_i0/data/processed/clean.csv
+2026-03-25 12:11:37,063 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-25 12:11:37,075 [INFO] src.main - [main] Starting pipeline
+2026-03-25 12:11:37,076 [INFO] src.main - [main] Starting pipeline
+2026-03-25 12:11:37,078 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-25 12:11:37,081 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-25 12:11:37,081 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-25 12:11:37,082 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-26/test_save_and_load_csv_roundtr0/nested/sample.csv
+2026-03-25 12:11:37,082 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-26/test_save_and_load_csv_roundtr0/nested/sample.csv
+2026-03-25 12:11:37,083 [INFO] src.utils - [utils.load_csv] Loading CSV from not_a_path
+2026-03-25 12:11:37,083 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-26/test_load_csv_rejects_director0/some_dir
+2026-03-25 12:11:37,084 [INFO] src.utils - [utils.load_model] Loading model from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-26/test_load_model_missing_file_r0/models/missing.joblib
+2026-03-25 12:11:37,084 [INFO] src.utils - [utils.save_model] Saving model to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-26/test_save_and_load_model_round0/models/model.joblib
+2026-03-25 12:11:37,084 [INFO] src.utils - [utils.load_model] Loading model from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-26/test_save_and_load_model_round0/models/model.joblib
+2026-03-25 12:15:57,209 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:15:57,212 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'pr_auc': 0.5, 'roc_auc': 0.5}
+2026-03-25 12:15:57,212 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:15:57,213 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'rmse': 1.118033988749895}
+2026-03-25 12:15:57,213 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:15:57,214 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:15:57,214 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:15:57,214 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:15:57,216 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:15:57,217 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:15:57,218 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:15:57,219 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:15:57,220 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:15:57,221 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:15:57,221 [INFO] src.utils - [utils.load_csv] Loading CSV from data/raw/iris.csv
+2026-03-25 12:15:57,241 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-27/test_load_raw_data_raises_on_e0/header_only.csv
+2026-03-25 12:15:57,242 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-27/test_load_raw_data_raises_on_e0/truly_empty.csv
+2026-03-25 12:15:57,248 [INFO] src.main - [main] Starting pipeline
+2026-03-25 12:15:57,249 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-27/test_main_end_to_end_creates_c0/data/raw/iris.csv
+2026-03-25 12:15:57,251 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-27/test_main_end_to_end_creates_c0/data/processed/clean.csv
+2026-03-25 12:15:57,253 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-25 12:15:57,260 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:15:57,304 [INFO] src.main - [main] Starting pipeline
+2026-03-25 12:15:57,306 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-27/test_main_calls_evaluate_and_i0/data/raw/iris.csv
+2026-03-25 12:15:57,307 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-27/test_main_calls_evaluate_and_i0/data/processed/clean.csv
+2026-03-25 12:15:57,309 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-25 12:15:57,311 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:15:57,330 [INFO] src.main - [main] Starting pipeline
+2026-03-25 12:15:57,331 [INFO] src.main - [main] Starting pipeline
+2026-03-25 12:15:57,333 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-25 12:15:57,336 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-25 12:15:57,336 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-25 12:15:57,337 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-27/test_save_and_load_csv_roundtr0/nested/sample.csv
+2026-03-25 12:15:57,337 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-27/test_save_and_load_csv_roundtr0/nested/sample.csv
+2026-03-25 12:15:57,338 [INFO] src.utils - [utils.load_csv] Loading CSV from not_a_path
+2026-03-25 12:15:57,339 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-27/test_load_csv_rejects_director0/some_dir
+2026-03-25 12:15:57,340 [INFO] src.utils - [utils.load_model] Loading model from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-27/test_load_model_missing_file_r0/models/missing.joblib
+2026-03-25 12:15:57,340 [INFO] src.utils - [utils.save_model] Saving model to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-27/test_save_and_load_model_round0/models/model.joblib
+2026-03-25 12:15:57,340 [INFO] src.utils - [utils.load_model] Loading model from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-27/test_save_and_load_model_round0/models/model.joblib
+2026-03-25 12:17:45,074 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:17:45,077 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'pr_auc': 0.5, 'roc_auc': 0.5}
+2026-03-25 12:17:45,078 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:17:45,078 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'rmse': 1.118033988749895}
+2026-03-25 12:17:45,079 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:17:45,079 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:17:45,079 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:17:45,080 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:17:45,081 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:17:45,082 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:17:45,083 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:17:45,083 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:17:45,084 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:17:45,085 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:17:45,086 [INFO] src.utils - [utils.load_csv] Loading CSV from data/raw/iris.csv
+2026-03-25 12:17:45,109 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-28/test_load_raw_data_raises_on_e0/header_only.csv
+2026-03-25 12:17:45,110 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-28/test_load_raw_data_raises_on_e0/truly_empty.csv
+2026-03-25 12:17:45,115 [INFO] src.main - [main] Starting pipeline
+2026-03-25 12:17:45,117 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-28/test_main_end_to_end_creates_c0/data/raw/iris.csv
+2026-03-25 12:17:45,118 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-28/test_main_end_to_end_creates_c0/data/processed/clean.csv
+2026-03-25 12:17:45,120 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-25 12:17:45,127 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:17:45,130 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'roc_auc': 0.5616359447004607, 'f1_weighted': 0.3543462762478043}
+2026-03-25 12:17:45,130 [INFO] src.main - [main] Validation metrics={'roc_auc': 0.5616359447004607, 'f1_weighted': 0.3543462762478043}
+2026-03-25 12:17:45,130 [INFO] src.utils - [utils.save_model] Saving model to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-28/test_main_end_to_end_creates_c0/models/model.joblib
+2026-03-25 12:17:45,133 [WARNING] src.main - [main] W&B model logging failed: module 'wandb' has no attribute 'init'
+2026-03-25 12:17:45,133 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:17:45,135 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-28/test_main_end_to_end_creates_c0/reports/predictions.csv
+2026-03-25 12:17:45,135 [INFO] src.main - [main] Done. Model=/private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-28/test_main_end_to_end_creates_c0/models/model.joblib, predictions=/private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-28/test_main_end_to_end_creates_c0/reports/predictions.csv
+2026-03-25 12:17:45,139 [INFO] src.main - [main] Starting pipeline
+2026-03-25 12:17:45,141 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-28/test_main_calls_evaluate_and_i0/data/raw/iris.csv
+2026-03-25 12:17:45,142 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-28/test_main_calls_evaluate_and_i0/data/processed/clean.csv
+2026-03-25 12:17:45,144 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-25 12:17:45,146 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:17:45,149 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'roc_auc': 0.5616359447004607, 'f1_weighted': 0.3543462762478043}
+2026-03-25 12:17:45,149 [INFO] src.main - [main] Validation metrics={'roc_auc': 0.5616359447004607, 'f1_weighted': 0.3543462762478043}
+2026-03-25 12:17:45,149 [INFO] src.utils - [utils.save_model] Saving model to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-28/test_main_calls_evaluate_and_i0/models/model.joblib
+2026-03-25 12:17:45,151 [WARNING] src.main - [main] W&B model logging failed: module 'wandb' has no attribute 'init'
+2026-03-25 12:17:45,151 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:17:45,153 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-28/test_main_calls_evaluate_and_i0/reports/predictions.csv
+2026-03-25 12:17:45,153 [INFO] src.main - [main] Done. Model=/private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-28/test_main_calls_evaluate_and_i0/models/model.joblib, predictions=/private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-28/test_main_calls_evaluate_and_i0/reports/predictions.csv
+2026-03-25 12:17:45,154 [INFO] src.main - [main] Starting pipeline
+2026-03-25 12:17:45,156 [INFO] src.main - [main] Starting pipeline
+2026-03-25 12:17:45,158 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-25 12:17:45,161 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-25 12:17:45,161 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-25 12:17:45,162 [INFO] src.utils - [utils.save_csv] Saving CSV to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-28/test_save_and_load_csv_roundtr0/nested/sample.csv
+2026-03-25 12:17:45,162 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-28/test_save_and_load_csv_roundtr0/nested/sample.csv
+2026-03-25 12:17:45,163 [INFO] src.utils - [utils.load_csv] Loading CSV from not_a_path
+2026-03-25 12:17:45,163 [INFO] src.utils - [utils.load_csv] Loading CSV from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-28/test_load_csv_rejects_director0/some_dir
+2026-03-25 12:17:45,164 [INFO] src.utils - [utils.load_model] Loading model from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-28/test_load_model_missing_file_r0/models/missing.joblib
+2026-03-25 12:17:45,164 [INFO] src.utils - [utils.save_model] Saving model to /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-28/test_save_and_load_model_round0/models/model.joblib
+2026-03-25 12:17:45,164 [INFO] src.utils - [utils.load_model] Loading model from /private/var/folders/rp/l2zkh_557px19r6670ygj_mw0000gn/T/pytest-of-cesar/pytest-28/test_save_and_load_model_round0/models/model.joblib
+2026-03-25 12:18:05,422 [INFO] __main__ - [main] Starting pipeline
+2026-03-25 12:18:05,423 [INFO] src.utils - [utils.load_csv] Loading CSV from data/raw/iris.csv
+2026-03-25 12:18:05,435 [INFO] src.utils - [utils.save_csv] Saving CSV to data/processed/clean.csv
+2026-03-25 12:18:05,439 [INFO] src.train - [train.train_model] Training model pipeline for problem_type=classification
+2026-03-25 12:18:05,457 [INFO] src.evaluate - [evaluate.evaluate_model] Starting evaluation
+2026-03-25 12:18:05,462 [INFO] src.evaluate - [evaluate.evaluate_model] Metrics={'roc_auc': 0.9883333333333334, 'f1_weighted': 0.9665831244778613}
+2026-03-25 12:18:05,462 [INFO] __main__ - [main] Validation metrics={'roc_auc': 0.9883333333333334, 'f1_weighted': 0.9665831244778613}
+2026-03-25 12:18:05,462 [INFO] src.utils - [utils.save_model] Saving model to models/model.joblib
+2026-03-25 12:18:05,463 [WARNING] __main__ - [main] W&B model logging failed: module 'wandb' has no attribute 'init'
+2026-03-25 12:18:05,463 [INFO] src.infer - [infer.run_inference] Running inference
+2026-03-25 12:18:05,465 [INFO] src.utils - [utils.save_csv] Saving CSV to reports/predictions.csv
+2026-03-25 12:18:05,466 [INFO] __main__ - [main] Done. Model=models/model.joblib, predictions=reports/predictions.csv

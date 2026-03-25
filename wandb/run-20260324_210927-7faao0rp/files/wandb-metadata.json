@@ -1,0 +1,35 @@
+{
+  "os": "macOS-26.2-arm64-arm-64bit-Mach-O",
+  "python": "CPython 3.14.3",
+  "startedAt": "2026-03-24T20:09:27.786903Z",
+  "program": "-m src.main",
+  "git": {
+    "remote": "https://github.com/cesargrobles/session1-kickoff.git",
+    "commit": "87ddd68c5533c55db0c98fc7bc27bbf932273b4b"
+  },
+  "email": "cesargrobles@student.ie.edu",
+  "root": "/Users/cesar/Desktop/IE/MBDS/Term 2/MLOps/session1-kickoff copy",
+  "host": "Cesars-MacBook-Air.local",
+  "executable": "/opt/anaconda3/envs/mlops-kickoff-2/bin/python",
+  "cpu_count": 8,
+  "cpu_count_logical": 8,
+  "disk": {
+    "/": {
+      "total": "494384795648",
+      "used": "454348288000"
+    }
+  },
+  "memory": {
+    "total": "17179869184"
+  },
+  "apple": {
+    "name": "Apple M3",
+    "ecpuCores": 4,
+    "pcpuCores": 4,
+    "gpuCores": 10,
+    "memoryGb": 16,
+    "swapTotalBytes": "12884901888",
+    "ramTotalBytes": "17179869184"
+  },
+  "writerId": "59o7qj1lrogek5tazao1isnsbe5vlw09"
+}
