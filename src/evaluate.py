@@ -14,6 +14,15 @@ import numpy as np
 import pandas as pd
 from sklearn.metrics import average_precision_score, f1_score, mean_squared_error, roc_auc_score
 
+try:
+    import wandb
+except ImportError:
+    wandb = None
+
+from src.logger import get_logger
+
+logger = get_logger(__name__)
+
 
 def _normalize_problem_type(problem_type: Optional[str]) -> str:
     """
@@ -29,7 +38,7 @@ def _normalize_problem_type(problem_type: Optional[str]) -> str:
     return (problem_type or "").strip().lower()
 
 
-def evaluate_model(model, X_eval: pd.DataFrame, y_eval: pd.Series, problem_type: str) -> Dict[str, float]:
+def evaluate_model(model, X_eval: pd.DataFrame, y_eval: pd.Series, problem_type: str, wandb_cfg: dict | None = None) -> Dict[str, float]:
     """
     Inputs:
     - model: Fitted model or Pipeline with predict()
@@ -44,7 +53,7 @@ def evaluate_model(model, X_eval: pd.DataFrame, y_eval: pd.Series, problem_type:
     - Standardized metric keys enable automated quality gates later in continuous integration pipelines
     - Returning JSON-safe floats prevents serialization issues in experiment tracking tools
     """
-    print("[evaluate.evaluate_model] Starting evaluation")  # TODO: replace with logging later
+    logger.info("[evaluate.evaluate_model] Starting evaluation")
 
     if X_eval is None or len(X_eval) == 0:
         raise ValueError("Fatal: X_eval is empty. Cannot evaluate model")
@@ -105,15 +114,22 @@ def evaluate_model(model, X_eval: pd.DataFrame, y_eval: pd.Series, problem_type:
                 "f1_weighted": float(f1_score(y_eval, y_pred, average="weighted")),
             }
 
-        # TODO: replace with logging later
-        print(f"[evaluate.evaluate_model] Metrics={metrics}")
+        if wandb_cfg and wandb and wandb_cfg.get("enabled", False) and wandb is not None and hasattr(wandb, "init"):
+            with wandb.init(project=wandb_cfg.get("project", "iris-mloaps"), entity=wandb_cfg.get("entity"), reinit=True):
+                wandb.log(metrics)
+
+        logger.info(f"[evaluate.evaluate_model] Metrics={metrics}")
         return metrics
 
     if pt == "regression":
         y_pred = model.predict(X_eval)
         metrics = {"rmse": float(np.sqrt(mean_squared_error(y_eval, y_pred)))}
-        # TODO: replace with logging later
-        print(f"[evaluate.evaluate_model] Metrics={metrics}")
+
+        if wandb_cfg and wandb and wandb_cfg.get("enabled", False):
+            with wandb.init(project=wandb_cfg.get("project", "iris-mloaps"), entity=wandb_cfg.get("entity"), reinit=True):
+                wandb.log(metrics)
+
+        logger.info(f"[evaluate.evaluate_model] Metrics={metrics}")
         return metrics
 
     raise ValueError(

@@ -13,9 +13,19 @@ TODO: Any temporary or hardcoded variable or parameter will be imported from con
 from typing import Optional
 
 import pandas as pd
+from sklearn import pipeline
 from sklearn.compose import ColumnTransformer
 from sklearn.linear_model import LinearRegression, LogisticRegression
 from sklearn.pipeline import Pipeline
+
+from src.logger import get_logger
+
+try:
+    import wandb
+except ImportError:
+    wandb = None
+
+logger = get_logger(__name__)
 
 
 def _normalize_problem_type(problem_type: Optional[str]) -> str:
@@ -36,6 +46,7 @@ def train_model(
     y_train: pd.Series,
     preprocessor: ColumnTransformer,
     problem_type: str,
+    wandb_cfg: dict | None = None,
 ) -> Pipeline:
     """
     Inputs:
@@ -50,9 +61,7 @@ def train_model(
     - Fitting happens on training data only, preventing leakage and inflated performance estimates
     - A single fitted pipeline artifact ensures training and inference run the exact same steps
     """
-    print(
-        # TODO: replace with logging later
-        f"[train.train_model] Training model pipeline for problem_type={problem_type}")
+    logger.info(f"[train.train_model] Training model pipeline for problem_type={problem_type}")
 
     # 1) Fail-fast structural guardrails
     if X_train is None or len(X_train) == 0:
@@ -98,5 +107,20 @@ def train_model(
 
     # 4) Execute training
     pipeline.fit(X_train, y_train)
+
+    if (
+    wandb_cfg
+    and wandb_cfg.get("enabled", False)
+    and wandb is not None
+    and hasattr(wandb, "init")
+    ):
+        run = wandb.init(
+        project=wandb_cfg.get("project", "iris-mloaps"),
+        entity=wandb_cfg.get("entity"),
+        reinit=True,
+    )
+        run.config.update(wandb_cfg)
+        wandb.log({"artifact/accuracy": 0})  # placeholder: update from evaluation step
+        run.finish()
 
     return pipeline

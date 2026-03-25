@@ -1,5 +1,4 @@
-# MLOps Project Configuration
-# This file drives all non-secret runtime settings for the pipeline.
+# Example configuration for the Iris MLOps pipeline
 
 data:
   raw: "data/raw/iris.csv"
@@ -51,9 +50,9 @@ logging:
   file: "logs/app.log"
 
 wandb:
-  enabled: true
-  project: session1-kickoff-prueba
-  entity: cesargrobles-ie-university
+  enabled: false
+  project: "iris-mloaps"
+  entity: ""
   tags: []
 
 api:

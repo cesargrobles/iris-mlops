@@ -1,0 +1,34 @@
+_wandb:
+    value:
+        cli_version: 0.25.1
+        e:
+            edpw9hwzsm4h2qlkarccpbb3m5vdvii5:
+                email: cesargrobles@student.ie.edu
+                executable: /opt/anaconda3/envs/mlops-kickoff-2/bin/python
+                git:
+                    commit: 87ddd68c5533c55db0c98fc7bc27bbf932273b4b
+                    remote: https://github.com/cesargrobles/session1-kickoff.git
+                host: Cesars-MacBook-Air.local
+                os: macOS-26.2-arm64-arm-64bit-Mach-O
+                program: -m src.main
+                python: CPython 3.14.3
+                root: /Users/cesar/Desktop/IE/MBDS/Term 2/MLOps/session1-kickoff copy
+                startedAt: "2026-03-24T20:09:24.987192Z"
+                writerId: edpw9hwzsm4h2qlkarccpbb3m5vdvii5
+        m: []
+        python_version: 3.14.3
+        t:
+            "1":
+                - 5
+                - 53
+            "2":
+                - 5
+                - 53
+            "3":
+                - 2
+            "4": 3.14.3
+            "5": 0.25.1
+            "10":
+                - 20
+            "12": 0.25.1
+            "13": darwin-arm64

@@ -1,0 +1,39 @@
+name: CI
+
+on:
+  pull_request:
+    branches: ["main"]
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  test-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      WANDB_MODE: disabled
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          auto-activate-base: true
+
+      - name: Install conda-lock and create environment
+        shell: bash -el {0}
+        run: |
+          conda install -n base -c conda-forge conda-lock -y
+          conda run -n base conda-lock install --name mlops-kickoff-2 conda-lock.yml
+
+      - name: Run tests
+        shell: bash -el {0}
+        run: |
+          conda activate mlops-kickoff-2
+          pytest -q
+
+      - name: Validate Docker build
+        run: docker build -t iris-mloaps:test .
