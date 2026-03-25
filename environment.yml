@@ -1,7 +1,6 @@
 name: mlops-kickoff-2
 channels:
   - conda-forge
-  - defaults
 dependencies:
   - python>=3.9
   - pandas
@@ -23,3 +22,9 @@ dependencies:
     - fastapi
     - uvicorn[standard]
     - wandb
+
+platforms:
+  - linux-64
+  - osx-arm64
+  - win-64
+  - linux-aarch64
