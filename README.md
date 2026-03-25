@@ -2,12 +2,12 @@
 
 **Course:** MLOps: Master in Business Analytics and Data Science  
 **Status:** Production-Ready (Modularized Pipeline with CI/CD and Cloud Deployment)  
-**Group:** Group 3
-    - Andrea Sabatés
-    - Tina Jannasch
-    - Martí Solà
-    - Ricardo Velásquez
-    - César González
+**Group:** Group 3  
+    - Andrea Sabatés  
+    - Tina Jannasch  
+    - Martí Solà  
+    - Ricardo Velásquez  
+    - César González  
 
 ---
 
