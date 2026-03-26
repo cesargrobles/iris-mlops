@@ -216,7 +216,7 @@ def main(config_path: str = "config.yaml"):
         try:
             import wandb
 
-            run = wandb.init(project=config["wandb"].get("project", "iris-mloaps"), entity=config["wandb"].get("entity"), reinit=True)
+            run = wandb.init(project=config["wandb"].get("project", "iris-mlops"), entity=config["wandb"].get("entity"), reinit=True)
             artifact = wandb.Artifact("iris_model", type="model")
             artifact.add_file(str(model_path))
             run.log_artifact(artifact, aliases=["prod"])
