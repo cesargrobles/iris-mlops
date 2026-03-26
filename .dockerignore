@@ -9,3 +9,6 @@ models/
 reports/
 notebooks/
 *.log
+tests/
+wandb/
+.pytest_cache/
