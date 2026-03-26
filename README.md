@@ -1,142 +1,221 @@
 # Iris Species Classification — Automated Flower Identification
 
-**Course:** MLOps: Master in Business Analytics and Data Science  
-**Status:** Production-Ready (Modularized Pipeline with CI/CD and Cloud Deployment)  
-**Group:** Group 3  
-    - Andrea Sabatés  
-    - Tina Jannasch  
-    - Martí Solà  
-    - Ricardo Velásquez  
-    - César González  
+**Course:** MLOps: Master in Business Analytics and Data Science
+**Status:** Production-Ready (Modularized Pipeline with CI/CD and Cloud Deployment)
+**Group:** Group 3
+- Andrea Sabatés
+- Tina Jannasch
+- Martí Solà
+- Ricardo Velásquez
+- César González
 
 ---
 
-## 1. Business Objective
+## 1. Business Case
 
-Wholesale florists currently rely on manual botanical inspection to verify the species of flower batches at goods-receipt. This project automates that verification step using physical measurements.
+### The Problem
 
-* **The Goal:** Predict the species of an Iris flower (Setosa, Versicolor, or Virginica) from four physical measurements taken at the point of goods-receipt, replacing a slow and error-prone manual process.
-* **The User:** Procurement staff at BloomCo who need to verify incoming flower batches quickly and accurately without specialist botanical knowledge.
-* **In Scope:** A repeatable, modular MLOps pipeline that classifies Iris species and generates a confidence score per prediction.
-* **Out of Scope:** Automated purchasing decisions, real-time sensor integration, or classification of flower species beyond the three Iris variants in the dataset.
+BloomCo's procurement team manually inspects every incoming flower batch to verify species before accepting delivery from suppliers. Staff rely on visual and tactile checks that require botanical expertise most procurement employees don't have. The result: an **88% identification accuracy** that routinely causes downstream problems — wrong species shipped to florist clients, costly returns, and supplier disputes that take days to resolve.
+
+The core issue is not just accuracy. It is **operational fragility**: the business relies on the knowledge and availability of a small number of specialists, and there is no audit trail when a misidentification occurs.
+
+### Why a Model Alone Is Not Enough
+
+A one-off notebook that classifies Iris species would improve accuracy, but it would not solve the operational problem. If the notebook breaks, only the person who wrote it can fix it. If a supplier adds a new column format, the notebook silently produces wrong results. If the specialist is on leave, the business is stuck.
+
+This project delivers a **production-ready ML pipeline**, not a script. The difference matters to the business:
+
+- **Reliability:** Automated tests block broken code from ever reaching production. The CI pipeline validates every change before it can affect live predictions.
+- **Trust:** Every training run is logged in Weights & Biases with full metrics, parameters, and the model artifact version. The business can always answer: *which model is live, when was it deployed, and what accuracy did it have at deployment time?*
+- **Risk reduction:** The model is versioned and promoted through a registry before serving. Rolling back to a previous version takes seconds, not a debugging session.
+- **Maintainability:** Each pipeline stage is a separate, testable module. Changing the feature engineering or swapping the algorithm does not require touching the API or the deployment configuration. Any team member — not just the original author — can extend or fix the system.
+- **Delivery speed:** Because the environment is locked (`conda-lock.yml`) and deployment is automated (GitHub Release → Render), moving from a validated experiment to a live API is a single button press.
+
+### What This Delivers for BloomCo
+
+| Before | After |
+|---|---|
+| Manual inspection, 88% accuracy | Automated prediction, ≥95% accuracy |
+| Specialist knowledge required at goods-receipt | Any procurement staff member can operate the tool |
+| No audit trail when mislabelling occurs | Full experiment and deployment history in W&B |
+| Broken analysis = blocked operations | CI/CD ensures broken code never reaches production |
+| Estimated €18,000/year in return costs | Target: reduce return costs by >80% |
+
+### In Scope / Out of Scope
+
+**In scope:** A repeatable, modular MLOps pipeline that classifies Iris species from physical measurements and generates a confidence score per prediction, served via a REST API.
+
+**Out of scope:** Automated purchasing decisions, real-time sensor integration, and classification of flower species beyond the three Iris variants in the training dataset.
 
 ---
 
 ## 2. Success Metrics
 
-* **Business KPI:** Reduce the species mislabelling rate at goods-receipt from the current baseline of **88% manual accuracy** to a target of **≥ 95% model accuracy**, cutting downstream return costs estimated at €18,000/year.
-* **Technical Metric:** **Accuracy** and **F1-Score (weighted)** on the validation set, balancing correct identification across all three species classes.
-* **Acceptance Criteria:** The model must perform consistently across all three species — no single class should fall below 90% recall, ensuring minority-class species are not systematically missed.
+- **Business KPI:** Reduce species mislabelling at goods-receipt from 88% baseline to ≥95% model accuracy, targeting €18,000/year reduction in downstream return costs.
+- **Technical Metric:** Weighted F1-score and accuracy on the held-out test set.
+- **Acceptance Criteria:** No single species class falls below 90% recall — minority classes must not be systematically missed.
+- **Operational Criteria:** API response time < 500ms; CI passes on every PR; deployment tied to a formal GitHub Release.
 
 ---
 
 ## 3. The Data
 
 ### Source and unit of analysis
-- The classic Iris dataset, sourced via the Seaborn library
-- Unit of analysis is a single flower sample with four physical measurements
+
+- Classic Iris dataset, sourced via the Seaborn library (originally UCI ML Repository)
+- Unit of analysis: one flower sample with four physical measurements
 
 ### Dataset snapshot
-- Rows: 150
-- Columns: 5 (4 features + 1 target)
-- Class distribution: perfectly balanced — 50 samples per species (33.3% each)
-- Feature value ranges: sepal length 4.3–7.9 cm, petal length 1.0–6.9 cm
+
+| Property | Value |
+|---|---|
+| Total rows | 150 |
+| Features | 4 (sepal length, sepal width, petal length, petal width) |
+| Target classes | 3 (setosa, versicolor, virginica) |
+| Class distribution | Balanced — 50 samples per class (33.3% each) |
+| Sepal length range | 4.3–7.9 cm |
+| Petal length range | 1.0–6.9 cm |
 
 ### Target definition
-- `species`: the Iris species of the sample — one of `setosa`, `versicolor`, or `virginica`
 
-### Data sensitivity
-- This dataset contains no personal or commercially sensitive information
-- In a production deployment, batch measurement records linked to supplier IDs would be treated as confidential business data and must not be committed to public version control
+`species` — the Iris species of the sample: `setosa`, `versicolor`, or `virginica`.
 
 ### Data Dictionary
 
 | Feature | Description | Unit |
 |---|---|---|
-| `species` | Target — Iris species label | categorical |
 | `sepal_length` | Length of the sepal (outer petal) | cm |
 | `sepal_width` | Width of the sepal | cm |
 | `petal_length` | Length of the inner petal | cm |
 | `petal_width` | Width of the inner petal | cm |
+| `species` | Target — Iris species label | categorical |
+
+### Data sensitivity
+
+This dataset contains no personal or commercially sensitive information. In a production deployment, batch measurement records linked to supplier IDs would be treated as confidential business data and must not be committed to public version control.
 
 ---
 
-## 4. MLOps Pipeline Architecture
+## 4. Model Card
 
-This repository implements a complete **Machine Learning Operations (MLOps)** pipeline, transitioning from fragile Jupyter Notebooks to production-ready, testable software engineering architecture.
+### Algorithm
 
-### Core Principles
-* **Separation of Concerns:** Every step (Loading, Cleaning, Validating, Training, Evaluation, Inference) has a dedicated, single-purpose Python module.
-* **Fail-Fast Security Gates:** `validate.py` blocks missing values and schema violations before expensive compute begins.
-* **Leakage Prevention:** Data is split *before* fitting any feature transformations or the model.
-* **Deployable Artifacts:** The orchestrator bundles preprocessing and the classifier into a single `.joblib` file, preventing training-serving skew.
-* **Reproducibility:** Environment is locked with `conda-lock.yml` for consistent dependencies across development, CI, and production.
-* **Observability:** Structured logging via `logger.py` and experiment tracking with Weights & Biases (W&B).
-* **Testing:** Comprehensive unit tests for all modules with pytest.
-* **Containerization:** Docker-based deployment for consistent runtime environment.
-* **CI/CD:** Automated testing and deployment pipelines with GitHub Actions.
+| Property | Value |
+|---|---|
+| Algorithm | Logistic Regression |
+| Solver | lbfgs |
+| Max iterations | 500 |
+| Class weighting | Balanced (adjusts for class imbalance automatically) |
+| Preprocessing | Quantile binning — 3 bins — applied to all 4 features |
+| Pipeline artifact | Preprocessor + classifier bundled as a single `.joblib` file |
 
-### Pipeline Stages
-1. **Data Loading (`load_data.py`):** Fetches raw data from source
-2. **Data Cleaning (`clean_data.py`):** Handles missing values, outliers, and basic transformations
-3. **Data Validation (`validate.py`):** Enforces schema constraints and data quality checks
-4. **Feature Engineering (`features.py`):** Creates derived features and preprocessing pipeline
-5. **Model Training (`train.py`):** Fits the machine learning model
-6. **Model Evaluation (`evaluate.py`):** Computes metrics and logs to W&B
-7. **Model Inference (`infer.py`):** Generates predictions on new data
-8. **API Serving (`api.py`):** FastAPI application for real-time predictions
+### Training configuration
 
-### Configuration Management
-- **Static Config:** `config.yaml` contains all non-secret settings
-- **Environment Variables:** Secrets (API keys) loaded from `.env` file
-- **Runtime Overrides:** Command-line arguments can override config values
+| Split | Size | Rows (approx.) |
+|---|---|---|
+| Training | 70% | 105 |
+| Validation | 20% | 30 |
+| Test (held-out) | 10% | 15 |
+
+Splits are **stratified** to preserve class proportions. Feature transformations are fitted on training data only — no leakage.
+
+### Expected performance
+
+| Metric | Target |
+|---|---|
+| Accuracy (validation) | ≥ 95% |
+| Weighted F1-score | ≥ 0.95 |
+| Per-class recall | ≥ 90% for all three classes |
+
+### Known limitations
+
+- Trained on a balanced, small dataset (150 samples). Real-world performance on heavily imbalanced supplier batches has not been validated.
+- Input features must be within the observed training range. Measurements well outside the range (e.g., sensors with systematic bias) may degrade accuracy silently.
+- The model classifies only the three Iris species present in the training data. It has no mechanism to flag out-of-distribution samples.
+- No data drift detection is implemented in the current version. Model performance should be monitored and the artifact re-promoted if accuracy degrades.
+
+### Model registry
+
+The production model artifact is stored in Weights & Biases under the alias `prod`. The API downloads this artifact at startup — it never loads a local unmanaged file.
 
 ---
 
-## 5. Repository Structure
+## 5. MLOps Pipeline Architecture
+
+This project transitions from a fragile Jupyter notebook to a production-grade ML system. Each concern is isolated in its own testable module.
+
+### Core principles
+
+- **Separation of concerns:** Every stage (load, clean, validate, feature engineer, train, evaluate, infer) lives in a dedicated module.
+- **Fail-fast validation:** `validate.py` blocks schema violations and missing values before any compute begins.
+- **Leakage prevention:** Data is split *before* any feature transformation is fitted.
+- **Deployable artifacts:** Preprocessor and classifier are saved as a single `.joblib` pipeline, eliminating training-serving skew.
+- **Reproducibility:** Environment locked with `conda-lock.yml` for consistent dependencies across local, CI, and production.
+- **Observability:** Structured logging via `logger.py` (console + file) and full experiment tracking with Weights & Biases.
+- **Testability:** All modules covered by pytest; CI blocks merges when tests fail.
+- **Containerization:** Docker build uses the locked environment for a consistent runtime.
+- **CI/CD:** Automated testing on every PR; deployment triggered only by a formal GitHub Release.
+
+### Pipeline stages
+
+1. **`load_data.py`** — Fetches raw data from source
+2. **`clean_data.py`** — Handles missing values and standardises column names
+3. **`validate.py`** — Enforces schema constraints and data quality gates
+4. **`features.py`** — Builds the sklearn `ColumnTransformer` preprocessing recipe
+5. **`train.py`** — Fits Logistic Regression inside a sklearn `Pipeline`
+6. **`evaluate.py`** — Computes metrics and logs to W&B
+7. **`infer.py`** — Generates predictions with confidence scores
+8. **`api.py`** — FastAPI application for real-time serving (downloads model from W&B registry)
+
+### Configuration management
+
+| Layer | Purpose |
+|---|---|
+| `config.yaml` | All non-secret runtime settings (paths, model params, split sizes) |
+| `.env` | Secrets only (W&B API key) — never committed |
+| CLI args | Optional runtime overrides via `--config` flag |
+
+---
+
+## 6. Repository Structure
 
 ```text
 .
 ├── .env.example                    # Environment variables template
 ├── .github/
 │   └── workflows/
-│       ├── ci.yml                  # Continuous Integration pipeline
-│       └── deploy.yml              # Deployment automation
-├── config.yaml                     # Pipeline configuration
-├── conda-lock.yml                  # Locked environment dependencies
-├── Dockerfile                      # Container definition
+│       ├── ci.yml                  # Continuous Integration — runs on every PR
+│       └── deploy.yml              # Deployment — triggered by GitHub Release
+├── config.yaml                     # All non-secret pipeline configuration
+├── conda-lock.yml                  # Locked environment for reproducibility
+├── Dockerfile                      # Container definition (uses conda-lock)
+├── .dockerignore                   # Excludes dev artifacts from image
 ├── environment.yml                 # Conda environment specification
 ├── pytest.ini                      # Test configuration
 ├── requirements.txt                # Python dependencies (fallback)
 ├── data/
-│   ├── raw/                        # Raw input data
-│   │   └── iris.csv
-│   └── processed/                  # Cleaned data
-│       └── clean.csv
-├── logs/                           # Application logs
-├── models/                         # Trained model artifacts
-│   └── model.joblib
-├── notebooks/                      # Exploratory analysis
-│   ├── 00_iris_analysis_vLegacy.ipynb
-│   └── 01_iris_analysis_vExp.ipynb
-├── reports/                        # Prediction outputs
-│   └── predictions.csv
-├── src/                            # Source code
-│   ├── __init__.py
-│   ├── api.py                      # FastAPI application
+│   ├── raw/iris.csv                # Raw input data
+│   └── processed/clean.csv        # Cleaned data artifact
+├── logs/app.log                    # Structured application logs
+├── models/model.joblib             # Trained model artifact (local cache)
+├── notebooks/
+│   ├── 00_iris_analysis_vLegacy.ipynb  # Original exploratory notebook
+│   └── 01_iris_analysis_vExp.ipynb     # Modular sandbox (reads from src/)
+├── reports/predictions.csv        # Inference output
+├── src/
+│   ├── api.py                      # FastAPI serving layer
 │   ├── clean_data.py               # Data cleaning logic
-│   ├── config.py                   # Configuration loading
-│   ├── evaluate.py                 # Model evaluation
-│   ├── features.py                 # Feature engineering
+│   ├── config.py                   # Configuration loader
+│   ├── evaluate.py                 # Model evaluation and W&B logging
+│   ├── features.py                 # Feature engineering pipeline
 │   ├── infer.py                    # Inference logic
 │   ├── load_data.py                # Data loading
-│   ├── logger.py                   # Logging configuration
-│   ├── main.py                     # Pipeline orchestrator
+│   ├── logger.py                   # Structured logging (console + file)
+│   ├── main.py                     # Pipeline orchestrator entry point
 │   ├── train.py                    # Model training
-│   ├── utils.py                    # Utility functions
-│   └── validate.py                 # Data validation
-└── tests/                          # Unit tests
-    ├── __init__.py
+│   ├── utils.py                    # Artifact save/load helpers
+│   └── validate.py                 # Data validation gates
+└── tests/
     ├── test_clean_data.py
     ├── test_evaluate.py
     ├── test_features.py
@@ -150,79 +229,72 @@ This repository implements a complete **Machine Learning Operations (MLOps)** pi
 
 ---
 
-## 6. Setup and Installation
+## 7. Setup and Installation
 
 ### Prerequisites
+
 - Python 3.11+
-- Conda/Minconda
-- Docker (for containerized deployment)
-- GitHub account (for CI/CD)
+- Conda / Miniconda
+- Docker (for containerised deployment)
+- A Weights & Biases account (free tier is sufficient)
 
-### Local Development Setup
+### Local development setup
 
-1. **Clone the repository:**
-   ```bash
-   git clone <repository-url>
-   cd iris-mlops
-   ```
+**1. Clone the repository:**
+```bash
+git clone https://github.com/cesargrobles/iris-mlops.git
+cd iris-mlops
+```
 
-2. **Environment Setup:**
-   ```bash
-   # Create conda environment
-   conda env create -f environment.yml
-   conda activate mlops-kickoff-2
+**2. Set up the environment:**
+```bash
+# Recommended: use the locked environment for full reproducibility
+conda install -c conda-forge conda-lock
+conda-lock install --name mlops-kickoff-2 conda-lock.yml
+conda activate mlops-kickoff-2
 
-   # Or use locked environment for reproducibility
-   conda install -c conda-forge conda-lock
-   conda-lock install --name mlops-kickoff-2 conda-lock.yml
-   conda activate mlops-kickoff-2
-   ```
+# Alternative: create from environment.yml
+conda env create -f environment.yml
+conda activate mlops-kickoff-2
+```
 
-3. **Configure Environment Variables:**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your W&B credentials
-   ```
-
-4. **Install in development mode:**
-   ```bash
-   pip install -e .
-   ```
+**3. Configure secrets:**
+```bash
+cp .env.example .env
+# Edit .env and add your WANDB_API_KEY, WANDB_ENTITY, WANDB_PROJECT
+```
 
 ---
 
-## 7. Usage
+## 8. Usage
 
-### Exploratory Analysis
-Launch the interactive notebook for data exploration:
-```bash
-jupyter notebook notebooks/01_iris_analysis_vExp.ipynb
-```
+### Run the full training pipeline
 
-### Run the Full Pipeline
-Execute the end-to-end MLOps pipeline:
 ```bash
 python -m src.main --config config.yaml
 ```
 
-### Run Tests
-Execute the test suite:
+This runs: load → clean → validate → split → train → evaluate → save → infer → persist predictions.
+
+### Run tests
+
 ```bash
 python -m pytest -q
 ```
 
-### Start Local API Server
-Serve predictions via REST API:
+### Start the local API server
+
 ```bash
 uvicorn src.api:app --host 0.0.0.0 --port 8080
 ```
 
-Test the API:
+**Health check:**
 ```bash
-# Health check
 curl http://localhost:8080/health
+```
 
-# Make prediction
+**Make a prediction:**
+```bash
 curl -X POST \
   -H "Content-Type: application/json" \
   -d '{"instances":[{"sepal_length":5.0,"sepal_width":3.5,"petal_length":1.3,"petal_width":0.3}]}' \
@@ -231,31 +303,30 @@ curl -X POST \
 
 ---
 
-## 8. Docker Deployment
+## 9. Docker Deployment
 
-### Build the Container
 ```bash
+# Build
 docker build -t iris-mlops .
-```
 
-### Run Locally
-```bash
+# Run locally
 docker run -p 8080:8080 --env-file .env iris-mlops
-```
 
-### Verify Container
-```bash
+# Verify
 curl http://localhost:8080/health
 ```
 
+The Docker image uses the `conda-lock.yml` for exact dependency pinning. Development artifacts (`tests/`, `notebooks/`, `data/`, `reports/`, `wandb/`, `.github/`) are excluded via `.dockerignore`.
+
 ---
 
-## 9. Weights & Biases (W&B) Integration
+## 10. Weights & Biases Integration
 
-This project uses W&B for experiment tracking and model versioning:
+W&B is used for experiment tracking, artifact management, and the model registry.
 
 ### Configuration
-Add W&B settings to `config.yaml`:
+
+Set the following in `config.yaml`:
 ```yaml
 wandb:
   enabled: true
@@ -263,64 +334,54 @@ wandb:
   entity: "cesargrobles-ie-university"
 ```
 
-### Features
-- **Experiment Logging:** Automatic logging of hyperparameters, metrics, and artifacts
-- **Model Registry:** Versioned model storage and retrieval
-- **Artifact Management:** Tracking of datasets, models, and evaluation results
-- **Production Deployment:** API server downloads latest model from W&B registry
+And in `.env`:
+```
+WANDB_API_KEY=your_key_here
+WANDB_ENTITY=cesargrobles-ie-university
+WANDB_PROJECT=session1-kickoff-prueba
+WANDB_MODEL_ARTIFACT=iris_model
+```
 
-### W&B Workflow
-1. Training logs experiments to W&B
-2. Model artifacts are uploaded as W&B Artifacts
-3. API server downloads model from W&B for inference
-4. Evaluation metrics are tracked across runs
+### Workflow
 
----
-
-## 10. CI/CD Pipeline
-
-### Continuous Integration (CI)
-- **Trigger:** Pull requests and pushes to `main` branch
-- **Environment:** Ubuntu latest with Miniconda
-- **Steps:**
-  - Checkout code
-  - Setup conda environment
-  - Run test suite
-  - Validate Docker build
-- **Configuration:** `.github/workflows/ci.yml`
-
-### Continuous Deployment (CD)
-- **Trigger:** Manual dispatch or GitHub releases
-- **Environment:** Ubuntu latest
-- **Steps:**
-  - Checkout code
-  - Setup Python environment
-  - Run tests
-  - Build Docker image
-  - Deploy to cloud platform (Render/Heroku/GCP/AWS)
-- **Configuration:** `.github/workflows/deploy.yml`
+1. `main.py` logs hyperparameters, metrics, and the trained `.joblib` artifact to W&B
+2. The artifact is promoted with the alias `prod` at the end of a successful training run
+3. At API startup, `api.py` downloads the `prod` artifact from the W&B registry — it never loads an unmanaged local file
+4. All evaluation metrics are tracked across runs for comparison
 
 ---
 
-## 11. Cloud Deployment
+## 11. CI/CD Pipeline
 
-### Render Deployment
-The application is deployed on Render with the following configuration:
+### Continuous Integration (`ci.yml`)
 
-- **Service Type:** Web Service
-- **Runtime:** Docker
-- **Build Command:** `docker build -t iris-mlops .`
-- **Start Command:** `docker run -p $PORT:8080 --env-file .env iris-mlops`
-- **Environment Variables:** Configure W&B credentials in Render dashboard
-- **Health Check:** `/health` endpoint
+- **Trigger:** Pull requests and pushes to `main`
+- **Steps:** Checkout → setup Miniconda → install locked environment → run pytest → validate Docker build
+- **Effect:** PRs cannot be merged until all tests pass and the Docker image builds successfully
 
-**Live Deployment URL:** https://iris-mlops.onrender.com
+### Continuous Deployment (`deploy.yml`)
 
-### API Endpoints
-- `GET /health` - Health check
-- `POST /predict` - Batch prediction endpoint
+- **Trigger:** Publishing a formal GitHub Release from `main`
+- **Steps:** Checkout → install dependencies → run tests → build Docker image → deploy to Render
+- **Effect:** Production deployments are always tied to a tagged, reviewed release — no ad-hoc deploys
 
-### Example API Usage
+---
+
+## 12. Cloud Deployment
+
+**Live URL:** https://iris-mlops.onrender.com
+
+The application is deployed on Render as a Docker web service. The container downloads the `prod` model artifact from W&B at startup.
+
+### API endpoints
+
+| Endpoint | Method | Description |
+|---|---|---|
+| `/health` | GET | Returns `{"status": "ok", "model_loaded": true}` |
+| `/predict` | POST | Accepts a JSON batch, returns predictions with confidence scores |
+
+### Example (live deployment)
+
 ```bash
 curl -X POST \
   -H "Content-Type: application/json" \
@@ -330,113 +391,61 @@ curl -X POST \
 
 ---
 
-## 12. Testing Strategy
+## 13. Testing Strategy
 
-### Unit Tests
-- **Framework:** pytest
-- **Coverage:** All core modules tested
-- **CI Integration:** Tests run on every PR and push
-- **Command:** `python -m pytest -q`
+| Category | Modules covered |
+|---|---|
+| Data pipeline | `test_load_data.py`, `test_clean_data.py`, `test_validate.py` |
+| Feature engineering | `test_features.py` |
+| Model training | `test_train.py` |
+| Inference | `test_infer.py` |
+| Utilities | `test_utils.py` |
+| Evaluation | `test_evaluate.py` |
+| Integration | `test_main.py` (end-to-end pipeline) |
 
-### Test Categories
-- **Data Pipeline:** Loading, cleaning, validation
-- **Feature Engineering:** Preprocessing pipeline
-- **Model Training:** Algorithm fitting and serialization
-- **Inference:** Prediction generation
-- **Integration:** End-to-end pipeline execution
-
-### Test Data
-- Synthetic test data for deterministic testing
-- Mock objects for external dependencies (W&B)
-- Edge cases and error conditions
+All tests use synthetic data for determinism and mock external dependencies (W&B) to avoid network calls in CI.
 
 ---
 
-## 13. Evaluation Instructions for Reviewers
+## 14. Evaluation Checklist for Reviewers
 
-### Quick Start Checklist
-1. ✅ **Clone and Setup:** Follow setup instructions above
-2. ✅ **Run Tests:** `python -m pytest -q` (should pass 100%)
-3. ✅ **Execute Pipeline:** `python -m src.main --config config.yaml`
-4. ✅ **Check Outputs:** Verify `models/model.joblib`, `reports/predictions.csv`, and `data/processed/clean.csv` are created
-5. ✅ **Test API:** Start server with `uvicorn src.api:app --host 0.0.0.0 --port 8080` and test endpoints
-6. ✅ **Docker Build:** `docker build -t iris-mlops .` completes successfully
-7. ✅ **Live Deployment:** Visit https://iris-mlops.onrender.com/health
+1. **Clone and setup:** Follow Section 7 above
+2. **Run tests:** `python -m pytest -q` — all should pass
+3. **Run pipeline:** `python -m src.main --config config.yaml`
+4. **Check artifacts:** `models/model.joblib`, `reports/predictions.csv`, `data/processed/clean.csv`
+5. **Start API:** `uvicorn src.api:app --host 0.0.0.0 --port 8080`
+6. **Test endpoints:** `/health` and `/predict` as shown in Section 8
+7. **Docker build:** `docker build -t iris-mlops .`
+8. **Live service:** `curl https://iris-mlops.onrender.com/health`
 
-### Key Deliverables to Evaluate
-- **Code Quality:** Modular architecture, type hints, documentation
-- **Testing:** Comprehensive test coverage, CI passing
-- **Configuration:** Proper separation of config and secrets
-- **Containerization:** Working Dockerfile with conda-lock
-- **CI/CD:** Automated testing and deployment workflows
-- **Experiment Tracking:** W&B integration for logging and artifacts
-- **API Design:** RESTful endpoints with proper error handling
-- **Deployment:** Live service on Render with health checks
-- **Documentation:** Clear setup, usage, and architecture explanations
+### Key areas to assess
 
-### Performance Benchmarks
-- **Model Accuracy:** ≥ 95% on validation set
-- **API Response Time:** < 500ms for single prediction
-- **Container Size:** < 2GB Docker image
-- **Test Coverage:** 100% core functionality
-
-### Common Issues & Troubleshooting
-- **W&B Connection:** Ensure `.env` has valid API key
-- **Port Conflicts:** Change port if 8080 is occupied
-- **Conda Environment:** Use `conda-lock` for exact reproducibility
-- **Docker Build:** May take 5-10 minutes on first run
+- **Modularity:** Each `src/` module has a single responsibility
+- **Configuration:** No hardcoded runtime values — all in `config.yaml` or `.env`
+- **Logging:** Zero `print()` in production code; dual-output logger (console + file)
+- **Testing:** All modules covered; CI blocks on failures
+- **W&B registry:** Training promotes artifact with `prod` alias; API uses `prod` artifact
+- **Docker:** Lean image with strict `.dockerignore`; built with `conda-lock.yml`
+- **Deployment:** Live Render app responds to real JSON payloads
 
 ---
 
-## 14. Future Roadmap
+## 15. Changelog
 
-### Phase 2: Advanced MLOps
-* **Model Registry:** MLflow integration for model versioning
-* **Monitoring:** Data drift detection and model performance monitoring
-* **A/B Testing:** Multi-model deployment with traffic splitting
-* **Feature Store:** Centralized feature management
+### v1.0.0 — 2026-03-24
 
-### Phase 3: Production Scaling
-* **Kubernetes:** Container orchestration for high availability
-* **API Gateway:** Rate limiting, authentication, and request routing
-* **Database Integration:** Persistent storage for predictions and feedback
-* **Batch Processing:** Asynchronous prediction jobs for large datasets
-
-### Phase 4: Enterprise Features
-* **Security:** OAuth authentication and API key management
-* **Compliance:** GDPR compliance for data handling
-* **Multi-tenancy:** Isolated model deployments per customer
-* **Auto-scaling:** Dynamic resource allocation based on load
-
----
-
-## 15. Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit changes (`git commit -m 'Add amazing feature'`)
-4. Push to branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-### Development Guidelines
-- Follow PEP 8 style guidelines
-- Add tests for new functionality
-- Update documentation
-- Ensure CI passes before merging
+- Initial production release
+- Full modular pipeline: load → clean → validate → features → train → evaluate → infer
+- FastAPI serving layer with Pydantic request validation
+- W&B experiment tracking with `prod` artifact alias
+- API downloads model from W&B registry at startup (no local unmanaged artifacts)
+- Docker deployment using `conda-lock.yml` for exact reproducibility
+- CI pipeline validates all PRs; deployment triggered by GitHub Release
+- Live deployment on Render: https://iris-mlops.onrender.com
+- Comprehensive pytest suite covering all core modules
 
 ---
 
 ## 16. License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 17. Acknowledgments
-
-- Iris dataset from the UCI Machine Learning Repository
-- Scikit-learn for machine learning algorithms
-- FastAPI for API framework
-- Weights & Biases for experiment tracking
-- Conda for environment management
-- Render for cloud deployment
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
