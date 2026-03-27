@@ -115,7 +115,7 @@ def train_model(
     and hasattr(wandb, "init")
     ):
         run = wandb.init(
-        project=wandb_cfg.get("project", "iris-mloaps"),
+        project=wandb_cfg.get("project", "iris-mlops"),
         entity=wandb_cfg.get("entity"),
         reinit=True,
     )
